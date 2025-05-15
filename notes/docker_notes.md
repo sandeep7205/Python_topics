@@ -1,243 +1,402 @@
-This is a very good list of common and essential Docker commands! You've captured the core functionality of many key operations.
+**Comprehensive Docker Commands Reference Note: Essential & Commonly Used**
 
-Here's a review of your list, confirming the explanations and adding a little extra detail or nuance where helpful:
+This note provides a summary of key Docker commands for managing images, containers, data, networking, cleanup, and multi-container applications using Docker Compose.
 
-*   **`docker -v || docker --version`**:
-    *   **Your explanation:** `docker version.`
-    *   **Review:** Correct. Both `docker -v` and `docker --version` show the Docker version installed on your host.
-
-*   **`docker images`**:
-    *   **Your explanation:** `list of images`
-    *   **Review:** Correct. Lists the Docker images stored locally on your machine.
-
-*   **`docker pull <image_name>` [Eg: `docker pull python` || `ubuntu` || `hello-world`]**:
-    *   **Your explanation:** `pull the latest version image from DOCKER-HUB.`
-    *   **Review:** Correct. If no tag (like `:latest`) is specified, `docker pull` defaults to pulling the `:latest` tag from the default registry (which is Docker Hub unless configured otherwise).
-
-*   **`docker pull <image_name>:<version>` [Eg: `docker pull python:3.11`]**:
-    *   **Your explanation:** `pull the mentioned version image from DOCKER-HUB.`
-    *   **Review:** Correct. This explicitly pulls the image with the specified tag (version) from Docker Hub.
-
-*   **`docker run <image_id/image_name>` [Eg: `docker run python` || `ubuntu` || `hello-world`]**:
-    *   **Your explanation:** `create a new container from the image.`
-    *   **Review:** Correct. This creates a new container and starts it. What happens depends on the image's `CMD` or `ENTRYPOINT`. For simple images like `hello-world`, it runs, prints output, and exits. For images like `python` or `ubuntu` *without* `-it`, it might just start a non-interactive process based on their default command (often just keeping the container alive minimally) or exit quickly if the default command finishes immediately.
-
-*   **`docker run -it <image_id/image_name>` [Eg: `docker run -it python` || `ubuntu`]**:
-    *   **Your explanation:** `to download an image and create a new container from it in "Interactive Mode [to access the container from terminal]".`
-    *   **Review:** Mostly correct. It **creates and starts** a new container in interactive mode. The `-it` flag is indeed for interactive terminal access. It doesn't *download* the image if you already have it locally, but it will download it if you don't. The "Interactive Mode" description is accurate. This is commonly used when the image's `CMD` is a shell like `bash`.
-
-*   **`docker ps`**:
-    *   **Your explanation:** `list of running containers`
-    *   **Review:** Correct. Lists only containers that are currently running.
-
-*   **`docker ps -a`**:
-    *   **Your explanation:** `list of all containers`
-    *   **Review:** Correct. Lists all containers, regardless of their status (running, stopped, exited).
-
-*   **`docker start <container_id/container_name>`**:
-    *   **Your explanation:** `to start an existing container using it's id/name`
-    *   **Review:** Correct. Starts a previously created (and stopped) container.
-
-*   **`docker stop <container_id/container_name>`**:
-    *   **Your explanation:** `to stop an existing container using it's id/name`
-    *   **Review:** Correct. Gracefully stops a running container by sending a signal (SIGTERM), giving the container's main process a chance to shut down cleanly. Docker waits a default period (usually 10 seconds) before force-stopping (SIGKILL).
-
-*   **`docker restart <container_id/container_name>`**:
-    *   **Your explanation:** `to restart an existing container using it's id/name`
-    *   **Review:** Correct. Equivalent to running `docker stop` followed by `docker start` on the container.
-
-*   **`docker rm <container_id/container_name>`**:
-    *   **Your explanation:** `to remove a docker container [first stop the container]`
-    *   **Review:** Correct. Removes a container. You are right, it generally needs the container to be stopped first. You can force removal of a running container with `docker rm -f`, but stopping first is cleaner.
-
-*   **`docker rmi <image_name>`**:
-    *   **Your explanation:** `to remove a docker image [first remove it's container]`
-    *   **Review:** Correct. Removes a Docker image. You are right again, you cannot remove an image if there are any containers (running or stopped) that were created *from* that image. You must remove the containers first. You can force image removal with `docker rmi -f`, but this will also remove any containers based on that image, which should be used with caution.
-
-*   **`<image_name>:<version>`**:
-    *   **Your explanation:** `to download the specific verion from docker hub [command: pull/run]`
-    *   **Review:** Correct. This is the syntax used with commands like `pull` and `run` to specify a particular image tag (version) from the registry.
-
-*   **`docker run -d <image_id/image_name>`**:
-    *   **Your explanation:** `create a new container from the image in "Detached Mode"`
-    *   **Review:** Correct. `-d` (detached) runs the container in the background, printing the container ID and exiting your terminal prompt.
-
-*   **`docker run --name <container_name> -d <image_id/image_name>`**:
-    *   **Your explanation:** `create a new container with "custom name" from the image in "Detached Mode"`
-    *   **Review:** Correct. `--name` lets you assign a specific name instead of getting a random one. `-d` keeps it detached.
-
-*   **`docker run -p8080:3306 <image_id/image_name>`**:
-    *   **Your explanation:** `"-p" is use for port binding the "Container Port[3306] with Host Port[8080]"`
-    *   **Review:** Correct. `-p <host_port>:<container_port>` publishes a container's port to the host. Your example maps host port 8080 to container port 3306. This is crucial for accessing services running inside the container from your host machine's network.
-
-*   **`docker logs <container_id/container_name>`**:
-    *   **Your explanation:** `to check the container logs`
-    *   **Review:** Correct. Retrieves the standard output (stdout) and standard error (stderr) streams from the container's main process.
-
-*   **`docker exec -it <container_id/container_name> /bin/bash`**:
-    *   **Your explanation:** `"exec" give access to run additional commands in the existing container by accessing it's bash.`
-    *   **Review:** Correct. `docker exec` runs a *new* command inside a *running* container. The `-it` makes it interactive with a terminal. `/bin/bash` is the command you are executing inside the container (starting a bash shell). This is how you "get inside" a running container to inspect or troubleshoot, especially if it was run in detached mode (`-d`).
-
-*   **`docker exec -it <container_id/container_name> /bin/sh`**:
-    *   **Your explanation:** `"exec" give access to run additional commands in the existing container by accessing it's shell.`
-    *   **Review:** Correct. Similar to the previous command, but uses the `/bin/sh` shell, which is a simpler shell found in most Linux distributions, including very minimal ones. Use `/bin/bash` if bash is installed and you need its features; use `/bin/sh` as a more general option that often works.
-
-*   **`docker network create <network_name>`**:
-    *   **Your explanation:** `create a isolated space using "networks", where container can intearacts withouts any ports with eachothers inside the common network.`
-    *   **Review:** Correct. Custom Docker networks provide isolation and allow containers connected to the same network to communicate with each other using their container names (which Docker resolves to IP addresses within that network), without needing to expose ports on the host machine.
-
-*   **`docker network ls`**:
-    *   **Your explanation:** `list of networks with scopes`
-    *   **Review:** Correct. Lists the available Docker networks.
-
-*   **`docker rename <current_name_or_id> <new_name>`**:
-    *   **Your explanation:** `replacing <current_name_or_id> with the container's actual name or ID and <new_name> with the name you want to give it.`
-    *   **Review:** Correct. Renames an existing container. As noted before, you typically use the container's current name or ID to identify which one to rename.
-
-*   **`docker exec -it <container_id/container_name> bash from the command line. It opens a terminal session directly into the running container.`**:
-    *   **Your explanation:** This seems like a slightly rephrased version of the `docker exec -it <container_id/container_name> /bin/bash` command, perhaps reiterating its purpose.
-    *   **Review:** Correct. It accurately describes what `docker exec -it ... bash` does – giving you a shell session inside a running container.
-
-
-
-
-
-
-
-
-------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-**Docker Commands Quick Reference Note**
-
-This note covers fundamental Docker commands for managing images, containers, data, and basic networking.
-
-**Prerequisite:** Ensure Docker is installed and running on your system.
+**Prerequisite:** Ensure Docker Engine is installed and running on your system.
 
 ---
 
 **1. General Info & Help**
 
-*   `docker --version` or `docker -v`
-    *   **Purpose:** Show the installed Docker version.
-*   `docker info`
-    *   **Purpose:** Display detailed system-wide information about your Docker installation (daemon details, storage, resources, etc.).
-*   `docker help`
-    *   **Purpose:** List all main Docker commands.
-*   `docker <command> --help` (e.g., `docker run --help`)
-    *   **Purpose:** Get specific help and options for a particular Docker command.
+*   **`docker version`** or **`docker -v`**
+    *   **Use:** Show the installed Docker version and client/server information.
+    *   **Example:**
+        ```bash
+        docker version
+        ```
+*   **`docker info`**
+    *   **Use:** Display detailed system-wide information about your Docker installation (daemon details, storage driver, resources, etc.).
+    *   **Example:**
+        ```bash
+        docker info
+        ```
+*   **`docker help`**
+    *   **Use:** List all main Docker commands available.
+*   **`docker <command> --help`** (e.g., `docker run --help`, `docker network --help`)
+    *   **Use:** Get detailed usage instructions, options, and examples for a specific Docker command or command group.
+    *   **Example:**
+        ```bash
+        docker build --help
+        ```
 
 ---
 
-**2. Image Management**
+**2. Image Management (Building, Pulling, Pushing, Listing, Removing)**
 
-*   `docker pull <image_name>[:tag]` (e.g., `docker pull ubuntu`, `docker pull python:3.11`)
-    *   **Purpose:** Download an image from a registry (like Docker Hub) to your local machine. If no tag is specified, `latest` is assumed.
-*   `docker images`
-    *   **Purpose:** List all Docker images currently stored on your local machine.
-*   `docker build -t <name>[:tag] PATH` (e.g., `docker build -t my-app:latest .`)
-    *   **Purpose:** Build a Docker image from a `Dockerfile`.
-    *   `-t <name>[:tag]`: Assigns a name and optional tag to the resulting image.
-    *   `PATH`: Specifies the "build context" – the directory containing the `Dockerfile` and source files. The `.` means "current directory".
-*   `docker build -t <name>[:tag] -f <path/to/Dockerfile> PATH` (e.g., `docker build -t my-app:latest -f docker_files/Dockerfile .`)
-    *   **Purpose:** Build a Docker image when the `Dockerfile` is located outside the root of the build context.
-    *   `-f <path/to/Dockerfile>`: Specifies the path to the Dockerfile relative to where you run the command.
-    *   `PATH`: Still specifies the build context directory.
-*   `docker rmi <image_name>[:tag]` (e.g., `docker rmi my-app:latest`)
-    *   **Purpose:** Remove a Docker image from your local machine.
-    *   **Note:** You must remove any containers based on the image first, or use the `-f` (force) flag (use with caution!).
+*   **`docker pull <image_name>[:tag]`** (e.g., `docker pull ubuntu`, `docker pull python:3.10`, `docker pull nginx:latest`)
+    *   **Use:** Download an image (a read-only template for creating containers) from a registry (like Docker Hub).
+    *   **Explanation:** `<image_name>` is required. `<:tag>` is optional; if omitted, `latest` is assumed.
+    *   **Example:**
+        ```bash
+        docker pull centos:7         # Pulls CentOS version 7
+        docker pull node             # Pulls the latest Node.js image
+        ```
+*   **`docker images`** or **`docker image ls`**
+    *   **Use:** List all Docker images currently stored on your local machine.
+    *   **Example:**
+        ```bash
+        docker images
+        ```
+*   **`docker build -t <name>[:tag] PATH`** (e.g., `docker build -t my-web-app:v1.0 .`)
+    *   **Use:** Build a new Docker image using instructions from a `Dockerfile`.
+    *   **Explanation:**
+        *   `-t <name>[:tag]`: Assigns a name and optional version tag to the resulting image.
+        *   `PATH`: Specifies the "build context" – the directory containing the `Dockerfile` and any files needed for the build. The contents of this directory are sent to the Docker daemon. The `.` means "current directory".
+    *   **Example:** (Run from the directory containing your `Dockerfile`)
+        ```bash
+        docker build -t my-python-app:latest .
+        ```
+*   **`docker build -f <path/to/Dockerfile> -t <name>[:tag] PATH`** (e.g., `docker build -f dockerfiles/prod.Dockerfile -t my-app:prod .`)
+    *   **Use:** Build an image when the `Dockerfile` is located *outside* the root of the build context.
+    *   **Explanation:**
+        *   `-f <path/to/Dockerfile>`: Specifies the path to the `Dockerfile`, relative to where you run the command.
+        *   `PATH`: Still specifies the root of the build context directory whose contents are sent to the daemon.
+    *   **Example:** (Run from project root, Dockerfile is in `./dockerfiles/`)
+        ```bash
+        docker build -f dockerfiles/Dockerfile -t my-app:latest .
+        ```
+*   **`docker push <image_name>[:tag]`** (e.g., `docker push my-username/my-image:latest`)
+    *   **Use:** Upload (push) a local image to a registry (like Docker Hub or a private registry).
+    *   **Explanation:** You usually need to tag the image with your registry username or the registry URL before pushing (e.g., `docker tag my-app:latest my-username/my-app:latest`). You'll also need to log in (`docker login`).
+    *   **Example:**
+        ```bash
+        docker tag my-app:latest your-dockerhub-username/my-app:latest
+        docker login # Enter your Docker Hub credentials
+        docker push your-dockerhub-username/my-app:latest
+        ```
+*   **`docker tag <source_image>[:tag] <target_image>[:tag]`** (e.g., `docker tag my-app:v1.0 my-app:latest`)
+    *   **Use:** Create a new tag for an existing image. Useful for giving an image multiple names or preparing it for pushing to a specific registry.
+    *   **Example:**
+        ```bash
+        docker tag my-app:build-12345 my-username/my-app:latest
+        ```
+*   **`docker rmi <image_name>[:tag] or <image_id>`** (e.g., `docker rmi alpine:latest`, `docker rmi f7b6a5c4d3e2`)
+    *   **Use:** Remove one or more Docker images from your local machine.
+    *   **Explanation:** Identify the image by name:tag or its Image ID.
+    *   **Note:** You must first remove any containers that were created from this image. Use the `-f` (force) flag (`docker rmi -f <image>`) to force removal, which also removes dependent containers (use with caution!).
+    *   **Example:**
+        ```bash
+        docker rmi old-unused-image
+        ```
+*   **`docker history <image_name>[:tag] or <image_id>`**
+    *   **Use:** Show the history of an image. Displays each layer that makes up the image and the command that created it.
+    *   **Example:**
+        ```bash
+        docker history ubuntu:latest
+        ```
 
 ---
 
-**3. Container Management**
+**3. Container Management (Run, Start, Stop, Remove, List, Rename)**
 
-*   `docker run <image_name>[:tag]` (e.g., `docker run hello-world`)
-    *   **Purpose:** Create a new container from an image and start it.
-*   `docker run -it <image_name>[:tag]` (e.g., `docker run -it ubuntu`)
-    *   **Purpose:** Create and start a new container in **interactive mode** with a terminal attached (`-i` and `-t`). Useful for accessing the container's shell.
-*   `docker run -d <image_name>[:tag]` (e.g., `docker run -d my-web-app`)
-    *   **Purpose:** Create and start a new container in **detached mode**. It runs in the background, and Docker prints the container ID.
-*   `docker run --name <container_name> ... <image_name>[:tag]` (e.g., `docker run --name my-specific-container -d my-app:latest`)
-    *   **Purpose:** Assign a custom name to a new container during creation.
-*   `docker run -p <host_port>:<container_port> ... <image_name>[:tag]` (e.g., `docker run -p 8080:80 my-web-server`)
-    *   **Purpose:** Publish a container's port(s) to your host machine's port(s). Maps `<host_port>` to `<container_port>`.
-*   `docker ps`
-    *   **Purpose:** List only the containers that are currently running.
-*   `docker ps -a`
-    *   **Purpose:** List all containers on your machine, regardless of their status (running, stopped, exited).
-*   `docker start <container_name_or_id>` (e.g., `docker start my-specific-container`, `docker start abcdef123456`)
-    *   **Purpose:** Start a previously created (and currently stopped) container.
-*   `docker stop <container_name_or_id>`
-    *   **Purpose:** Gracefully stop a running container.
-*   `docker restart <container_name_or_id>`
-    *   **Purpose:** Stop and then start a container.
-*   `docker rm <container_name_or_id>`
-    *   **Purpose:** Remove a container.
-    *   **Note:** The container must be stopped first, or use `-f` (force, use with caution!).
-*   `docker rename <current_name_or_id> <new_name>`
-    *   **Purpose:** Change the name of an existing container.
+*   **`docker run [OPTIONS] <image_name>[:tag] [COMMAND] [ARG...]`**
+    *   **Use:** Create a new container from a specified image and start it. This is the fundamental command for launching containers.
+    *   **Explanation:** If `[COMMAND]` is provided, it overrides the image's default command (`CMD` or `ENTRYPOINT`). If no command is specified, the image's default is used.
+    *   **Common Options (See Examples in General `run` section):**
+        *   `-it`: Interactive + TTY (for shells/interactive apps)
+        *   `-d`: Detached (run in background)
+        *   `--name <container_name>`: Assign a custom name
+        *   `-p <host_port>:<container_port>`: Publish ports
+        *   `-v <volume_source>:<container_dest>`: Mount volumes or bind mounts
+        *   `--network <network_name>`: Connect to a specific network
+        *   `--env KEY=VALUE` or `-e KEY=VALUE`: Set environment variables
+*   **`docker create [OPTIONS] <image_name>[:tag] [COMMAND] [ARG...]`**
+    *   **Use:** Create a new container from an image, but do **not** start it immediately.
+    *   **Explanation:** Useful if you want to set up a container's configuration (volumes, ports, etc.) but start it later with `docker start`. Takes the same options as `docker run`.
+    *   **Example:**
+        ```bash
+        docker create --name my-stopped-container -v my-data:/data ubuntu
+        # Container created but not running
+        ```
+*   **`docker ps`** or **`docker container ls`**
+    *   **Use:** List currently **running** containers.
+    *   **Example:**
+        ```bash
+        docker ps
+        ```
+*   **`docker ps -a`** or **`docker container ls -a`**
+    *   **Use:** List **all** containers (running, stopped, exited) on your machine.
+    *   **Explanation:** `-a` stands for "all".
+    *   **Example:**
+        ```bash
+        docker ps -a
+        ```
+*   **`docker start <container_name_or_id>`**
+    *   **Use:** Start one or more previously created (and currently stopped) containers.
+    *   **Example:**
+        ```bash
+        docker start my-stopped-container
+        ```
+*   **`docker stop <container_name_or_id>`**
+    *   **Use:** Gracefully stop one or more running containers (sends SIGTERM, waits, then SIGKILL).
+    *   **Example:**
+        ```bash
+        docker stop my-running-container
+        ```
+*   **`docker restart <container_name_or_id>`**
+    *   **Use:** Stop and then start one or more containers.
+    *   **Example:**
+        ```bash
+        docker restart my-app-server
+        ```
+*   **`docker kill <container_name_or_id>`**
+    *   **Use:** Forcefully stop one or more running containers immediately (sends SIGKILL).
+    *   **Example:**
+        ```bash
+        docker kill stubborn_container
+        ```
+*   **`docker rm <container_name_or_id>`**
+    *   **Use:** Remove one or more containers.
+    *   **Explanation:** Containers must typically be stopped first. Use `-f` (force) to stop and remove a running container (use with caution!).
+    *   **Example:**
+        ```bash
+        docker rm container-to-delete
+        docker rm -f container-to-force-delete # Stops and removes
+        ```
+*   **`docker rename <current_name_or_id> <new_name>`**
+    *   **Use:** Change the name of an existing container.
+    *   **Example:**
+        ```bash
+        docker rename old-name new-name
+        ```
+*   **`docker update [OPTIONS] <container_name_or_id>`**
+    *   **Use:** Update the configuration of one or more running containers (e.g., resource limits like CPU or memory).
+    *   **Example:**
+        ```bash
+        docker update --memory 512m my-app-container
+        ```
 
 ---
 
 **4. Interacting with Running Containers**
 
-*   `docker logs <container_name_or_id>`
-    *   **Purpose:** Fetch and display the standard output and standard error logs from a container.
-*   `docker exec -it <container_name_or_id> <command>` (e.g., `docker exec -it my-app-container bash`, `docker exec -it my-app-container python3 /app/my_script.py`)
-    *   **Purpose:** Execute a command inside a *running* container.
-    *   `-it`: Makes the execution interactive with a pseudo-TTY (like a regular terminal).
-    *   `<command>`: The command to run inside the container (e.g., `bash`, `ls`, `python3`). Common for getting a shell (`bash`, `sh`).
+*   **`docker logs [OPTIONS] <container_name_or_id>`**
+    *   **Use:** Fetch and display the standard output (stdout) and standard error (stderr) logs from a container's main process.
+    *   **Options:**
+        *   `-f`: Follow log output (like `tail -f`).
+        *   `--tail <number>`: Show only the last N lines.
+        *   `--since <timestamp or duration>`: Show logs since a specific time.
+    *   **Example:**
+        ```bash
+        docker logs my-web-server         # Show all logs
+        docker logs -f my-web-server      # Follow logs in real-time
+        docker logs --tail 100 my-web-server # Show last 100 lines
+        ```
+*   **`docker exec -it <container_name_or_id> <command>`** (e.g., `docker exec -it my-app-container bash`, `docker exec -it db-container psql -U user dbname`)
+    *   **Use:** Execute a *new* command inside a *running* container.
+    *   **Explanation:**
+        *   `-it`: Makes the execution interactive with a pseudo-TTY (essential for interactive shells or commands that need input/output).
+        *   `<command>`: The command to execute inside the container. Common commands are `bash` or `sh` to get a shell prompt for inspection or debugging.
+    *   **Example:**
+        ```bash
+        docker exec -it my-python-app-container bash # Get a bash shell
+        docker exec my-web-server nginx -s reload    # Send a reload signal to Nginx
+        ```
+*   **`docker attach <container_name_or_id>`**
+    *   **Use:** Attach your terminal's standard input, output, and error streams to a running container's main process.
+    *   **Explanation:** Use with caution; detaching usually requires a specific key sequence (often Ctrl+P, Ctrl+Q) to avoid stopping the container. Different from `exec`, which runs a *new* process. Useful for seeing the *primary* process output of a container run without `-d`.
+    *   **Example:**
+        ```bash
+        docker attach my-container-running-in-foreground
+        ```
 
 ---
 
 **5. Data Persistence (Volumes)**
 
-*   `docker volume create <volume_name>` (e.g., `docker volume create my-app-data`)
-    *   **Purpose:** Create a named volume managed by Docker.
-*   `docker volume ls`
-    *   **Purpose:** List all volumes.
-*   `docker volume rm <volume_name>`
-    *   **Purpose:** Remove a volume.
-    *   **Note:** Cannot remove if a container is currently using the volume.
-*   `docker run -v <volume_name>:<container_path> ... <image>` (e.g., `docker run -d -v my-app-data:/app/data my-app:latest`)
-    *   **Purpose:** Mount a volume into a container at a specific path. Data written to `<container_path>` will be stored on the volume.
+*   **`docker volume create <volume_name>`** (e.g., `docker volume create app-db-data`)
+    *   **Use:** Create a named volume managed by Docker. Volumes are the preferred way to persist data and share it between containers.
+    *   **Example:**
+        ```bash
+        docker volume create my-app-persistent-data
+        ```
+*   **`docker volume ls`** or **`docker volume list`**
+    *   **Use:** List all Docker volumes present on your machine.
+    *   **Example:**
+        ```bash
+        docker volume ls
+        ```
+*   **`docker volume inspect <volume_name>`**
+    *   **Use:** Display detailed low-level information about a volume (location on disk, driver, etc.).
+    *   **Example:**
+        ```bash
+        docker volume inspect my-app-persistent-data
+        ```
+*   **`docker volume rm <volume_name>`**
+    *   **Use:** Remove one or more volumes.
+    *   **Note:** Cannot remove a volume if it is currently being used by a container.
+    *   **Example:**
+        ```bash
+        docker volume rm old-backup-volume
+        ```
+*   **`docker volume prune`**
+    *   **Use:** Remove all unused local volumes.
+    *   **Explanation:** Prompts for confirmation before removing volumes that are not attached to any container.
+    *   **Example:**
+        ```bash
+        docker volume prune
+        ```
+*   **(Mounting Volumes/Bind Mounts):** Done using the `-v` or `--mount` flag with `docker run` (see `docker run` section above).
 
 ---
 
 **6. Networking**
 
-*   `docker network create <network_name>` (e.g., `docker network create my-custom-net`)
-    *   **Purpose:** Create a custom bridge network for container isolation and communication by name.
-*   `docker network ls`
-    *   **Purpose:** List all Docker networks.
-*   `docker network rm <network_name>`
-    *   **Purpose:** Remove a network.
-    *   **Note:** Cannot remove if containers are attached to the network.
-*   `docker run --network <network_name> ... <image>` (e.g., `docker run --network my-custom-net my-app-frontend`)
-    *   **Purpose:** Connect a new container to a specific network. Containers on the same custom network can often communicate using container names.
+*   **`docker network create [OPTIONS] <network_name>`** (e.g., `docker network create my-app-internal-net --driver bridge`)
+    *   **Use:** Create a custom network for containers to connect to. Containers on the same custom network can communicate with each other using container names as hostnames.
+    *   **Explanation:** `--driver bridge` is the default and most common type for custom networks.
+    *   **Example:**
+        ```bash
+        docker network create my-web-app-network
+        ```
+*   **`docker network ls`** or **`docker network list`**
+    *   **Use:** List all Docker networks (including default ones like `bridge`, `host`, `none`, and custom ones).
+    *   **Example:**
+        ```bash
+        docker network ls
+        ```
+*   **`docker network inspect <network_name>`**
+    *   **Use:** Display detailed information about a network, including which containers are connected to it.
+    *   **Example:**
+        ```bash
+        docker network inspect my-web-app-network
+        ```
+*   **`docker network rm <network_name>`**
+    *   **Use:** Remove one or more custom networks.
+    *   **Note:** Cannot remove a network if containers are currently connected to it.
+    *   **Example:**
+        ```bash
+        docker network rm unused-dev-network
+        ```
+*   **`docker network prune`**
+    *   **Use:** Remove all unused networks.
+    *   **Explanation:** Prompts for confirmation before removing networks that no containers are attached to.
+    *   **Example:**
+        ```bash
+        docker network prune
+        ```
+*   **`docker network connect <network_name> <container_name_or_id>`**
+    *   **Use:** Connect a running container to an existing network.
+    *   **Example:**
+        ```bash
+        docker network connect my-new-network existing-container
+        ```
+*   **`docker network disconnect <network_name> <container_name_or_id>`**
+    *   **Use:** Disconnect a running container from a network.
+    *   **Example:**
+        ```bash
+        docker network disconnect default-bridge existing-container
+        ```
+*   **(Connecting Containers to Networks):** Done using the `--network` flag with `docker run` (see `docker run` section above).
 
 ---
 
-**7. Cleanup**
+**7. System & Cleanup**
 
-*   `docker system prune`
-    *   **Purpose:** Remove stopped containers, unused networks, and dangling images (images layers not associated with a tagged image). Prompts for confirmation.
-*   `docker system prune -a`
-    *   **Purpose:** Remove *all* unused images (not just dangling), all stopped containers, and all unused networks. More aggressive cleanup. Prompts for confirmation.
+*   **`docker system df`**
+    *   **Use:** Show Docker disk space usage (images, containers, volumes, build cache).
+    *   **Example:**
+        ```bash
+        docker system df -v # -v for more detail
+        ```
+*   **`docker system prune`**
+    *   **Use:** Remove unused Docker objects: stopped containers, unused networks, and dangling images (image layers not associated with a tagged image).
+    *   **Explanation:** This is a safe command for freeing up disk space and will ask for confirmation.
+    *   **Example:**
+        ```bash
+        docker system prune
+        ```
+*   **`docker system prune -a`**
+    *   **Use:** Remove *all* unused Docker objects: all stopped containers, all unused networks, and *all* unused images (not just dangling ones).
+    *   **Explanation:** A more aggressive cleanup. Also prompts for confirmation. Use with caution!
+    *   **Example:**
+        ```bash
+        docker system prune -a
+        ```
+*   **`docker system prune --volumes`**
+    *   **Use:** Includes unused volumes in the cleanup. Requires confirmation.
+    *   **Example:**
+        ```bash
+        docker system prune --volumes
+        ```
 
 ---
 
-**Handy Combinations & Shortcuts**
+**8. Docker Compose (Multi-Container Applications)**
 
-*   `docker ps -aq` : Lists IDs of ALL containers (including stopped).
-*   `docker images -q` : Lists IDs of ALL images.
-*   `docker stop $(docker ps -aq)` : Stop all containers.
-*   `docker rm $(docker ps -aq)` : Remove all containers.
-*   `docker rmi $(docker images -q)` : Remove all images.
+*   **What it is:** A tool for defining and running **multi-container Docker applications** using a YAML file (`docker-compose.yml` or `compose.yaml`).
+*   **Command:** Use `docker compose` (newer syntax) or `docker-compose` (older syntax, might still be needed on some systems).
+*   **`docker compose up [OPTIONS] [SERVICES...]`**
+    *   **Use:** Build (if images aren't found), create, start, and attach to containers for all services defined in the `compose.yaml` file.
+    *   **Options:**
+        *   `-d`: Run in detached mode (in the background).
+        *   `--build`: Force rebuild images before starting.
+    *   **Example:** (Run from the directory containing your `compose.yaml` file)
+        ```bash
+        docker compose up       # Start services in foreground
+        docker compose up -d    # Start services in background
+        docker compose up --build web # Rebuild and start only the 'web' service
+        ```
+*   **`docker compose down [OPTIONS]`**
+    *   **Use:** Stop and remove containers, networks, and volumes created by `docker compose up`.
+    *   **Options:**
+        *   `-v`: Remove volumes (by default, volumes are preserved).
+        *   `--rmi all`: Remove images used by services.
+    *   **Example:** (Run from the directory containing your `compose.yaml` file)
+        ```bash
+        docker compose down          # Stop and remove containers/networks
+        docker compose down -v       # Stop, remove containers/networks, and remove volumes
+        ```
+*   **`docker compose ps`** or **`docker compose list`**
+    *   **Use:** List the containers (services) managed by Docker Compose for the current project.
+    *   **Example:**
+        ```bash
+        docker compose ps
+        ```
+*   **`docker compose logs [OPTIONS] [SERVICES...]`**
+    *   **Use:** View log output from services defined in the `compose.yaml` file.
+    *   **Options:**
+        *   `-f`: Follow log output.
+    *   **Example:**
+        ```bash
+        docker compose logs web db     # Show logs for web and db services
+        docker compose logs -f         # Follow logs for all services
+        ```
+*   **`docker compose build [SERVICES...]`**
+    *   **Use:** Build or rebuild images for services defined in the `compose.yaml` file.
+    *   **Example:**
+        ```bash
+        docker compose build           # Build images for all services
+        docker compose build frontend  # Build image only for the frontend service
+        ```
+*   **`docker compose exec [OPTIONS] SERVICE COMMAND [ARGS...]`**
+    *   **Use:** Run a command in a running container managed by Compose. Similar to `docker exec` but targets a service name from the `compose.yaml`.
+    *   **Options:**
+        *   `-it`: Interactive + TTY (common for shells).
+    *   **Example:**
+        ```bash
+        docker compose exec backend bash # Get a bash shell in the 'backend' service container
+        docker compose exec db pg_dump dbname > backup.sql # Run a backup command in the 'db' service container
+        ```
+
+---
+
+**9. Inspection & Diagnostics**
+
+*   **`docker inspect <object_name_or_id>`** (e.g., `docker inspect my-container`, `docker inspect my-image:latest`, `docker inspect my-network`, `docker inspect my-volume`)
+    *   **Use:** Display detailed low-level information (in JSON format) about a Docker object (container, image, network, volume, etc.). Incredibly useful for debugging and seeing configuration.
+    *   **Example:**
+        ```bash
+        docker inspect my-running-container
+        docker inspect my-web-app:latest
+        ```
