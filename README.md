@@ -4,11 +4,13 @@
 
 <!-- 
 
-docker build -t my-python-ubuntu-app:latest -f docker_files/Dockerfile .
-
-docker run -it my-python-ubuntu-app:latest
-
-docker exec -it my-python-ubuntu-app bash
+------------
+Create Image -> docker build -t <new_image_name> -f docker_files/Dockerfile .
+------------
+Create Container -> docker run --name <container_name> -it -v $(pwd):/app <image_name> bash
+------------
+Open a Container -> docker exec -it <container_name> bash
+------------
 
 
  -->
