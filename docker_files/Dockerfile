@@ -12,5 +12,4 @@ RUN apt update && \
 WORKDIR /app
 
 CMD ["bash"]
-
-
+ 
