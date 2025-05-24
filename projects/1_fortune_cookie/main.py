@@ -16,7 +16,8 @@ def show_fortune(quotes_dict: dict, category: str) -> None:
 # ───────────────────────────────────────────────────────────
 # 2.  Load JSON from file
 # ───────────────────────────────────────────────────────────
-FILE_PATH = "projects/fortune_cookie/fortunes.json"
+current_dir = os.path.dirname(os.path.abspath(__file__))
+FILE_PATH = current_dir + "/fortunes.json"
 
 if not os.path.exists(FILE_PATH):
     sys.exit("\n❌ File not found.\n")
