@@ -1,0 +1,44 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+
+# Virtual environments
+venv/
+env/
+
+# Git and version control
+.git/
+.gitignore
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# OS / IDE files
+*.swp
+*.swo
+*.DS_Store
+*.idea/
+*.vscode/
+node_modules
+
+# Logs
+*.log
+
+# Compiled binaries
+*.so
+*.out
+*.o
+*.exe
+
+# Large files or personal data
+*.zip
+*.tar.gz
+*.bak
+
+
+
+.env

@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  skm_docker_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: skm-docker-image # Name of the built image
+    container_name: skm-docker-container  # Name of the container name
+    stdin_open: true  # Keep terminal open
+    tty: true          # Allocate a terminal
+    working_dir: /app  # This is inside the container
+    volumes:
+      - /home/sandeepkumarmishra/Documents/py/python/:/app
