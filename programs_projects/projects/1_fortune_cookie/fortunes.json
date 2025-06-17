@@ -1,0 +1,99 @@
+{
+  "quotes": {
+    "motivation": [
+      "Progress is better than perfection.",
+      "Keep pushing — your future self is already clapping for you.",
+      "Failure in code is simply feedback in disguise.",
+      "Success is the sum of small efforts repeated daily.",
+      "Dream big, code bigger.",
+      "The only limit to our realization of tomorrow is our doubts of today.",
+      "Great things never come from comfort zones.",
+      "Don’t watch the clock; do what it does. Keep going.",
+      "Success usually comes to those who are too busy to be looking for it."
+    ],
+
+    "funny": [
+      "Your code works… until you show it to someone.",
+      "May your bugs be shallow and your coffee strong.",
+      "One does not simply write bug‑free code.",
+      "Coding: the art of turning caffeine into features.",
+      "I have a joke about UDP, but you might not get it.",
+      "Why do programmers prefer dark mode? Because light attracts bugs!",
+      "To understand what recursion is, you must first understand recursion.",
+      "There are 10 types of people in the world: those who understand binary and those who don’t.",
+      "Debugging is like being the detective in a crime movie where you are also the murderer."
+    ],
+
+    "coding": [
+      "Stack Overflow isn’t cheating. It’s teamwork.",
+      "You’re one breakpoint away from brilliance.",
+      "Typing ‘print’ is the start of every great script.",
+      "Commit early, commit often—regret occasionally.",
+      "Real programmers count from zero.",
+      "Good code is its own best documentation.",
+      "Simplicity is the soul of efficiency.",
+      "Code never lies, comments sometimes do.",
+      "Before software can be reusable it first has to be usable."
+    ],
+
+    "productivity": [
+      "Eat the frog first—tackle the hardest task early.",
+      "Deep work beats multitasking every time.",
+      "Short breaks recharge long coding sessions.",
+      "Focus on output, not hours.",
+      "The best time-management tool is saying ‘no’.",
+      "Work smarter, not harder.",
+      "Don’t confuse activity with productivity.",
+      "Your mind is a garden. Your thoughts are the seeds.",
+      "Small daily improvements lead to stunning results."
+    ],
+
+    "wellness": [
+      "Remember to blink and stretch—your code needs you healthy.",
+      "A clear mind debugs faster.",
+      "Balance is a feature, not a bug.",
+      "Rest is productive; downtime writes better code tomorrow.",
+      "Hydrate like your uptime depends on it.",
+      "Mental health matters as much as deadlines.",
+      "Step away from the screen to see clearly.",
+      "Your body is your most important framework.",
+      "Happiness is the best version control."
+    ],
+
+    "life": [
+      "Life is 10% what happens to us and 90% how we react to it.",
+      "Don’t count the days, make the days count.",
+      "Every moment is a fresh beginning.",
+      "Believe you can and you're halfway there.",
+      "Challenges are what make life interesting.",
+      "The best way out is always through.",
+      "Your vibe attracts your tribe.",
+      "Turn your wounds into wisdom.",
+      "Happiness depends upon ourselves."
+    ],
+
+    "learning": [
+      "Live as if you were to die tomorrow. Learn as if you were to live forever.",
+      "Mistakes are proof that you’re trying.",
+      "The expert in anything was once a beginner.",
+      "Learning never exhausts the mind.",
+      "The beautiful thing about learning is nobody can take it away from you.",
+      "Curiosity is the wick in the candle of learning.",
+      "Education is the passport to the future.",
+      "Don’t be afraid to ask questions.",
+      "Every day is a chance to learn something new."
+    ],
+
+    "inspiration": [
+      "The best way to get started is to quit talking and begin doing.",
+      "Don’t let yesterday take up too much of today.",
+      "You are never too old to set another goal or to dream a new dream.",
+      "Believe in yourself and all that you are.",
+      "It always seems impossible until it’s done.",
+      "Your limitation—it’s only your imagination.",
+      "Push yourself, because no one else is going to do it for you.",
+      "Great things never come from comfort zones.",
+      "Dream it. Wish it. Do it."
+    ]
+  }
+}
