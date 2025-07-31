@@ -8,7 +8,7 @@ print("\nPress 'r' to roll the dice, or 'q' to quit.")
 roll_keys = ['r', 'q']
 try:
     while True:
-        user_choice = input("\nEnter your choice: ").lower()
+        user_choice = input("\nEnter your choice ['r': roll and 'q': quit.]: ").lower()
         if user_choice in roll_keys:
             if user_choice == 'q':
                 print("\nThanks for playing! See you next time.")
