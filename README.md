@@ -1,6 +1,5 @@
 # Python-Notes
 <!-- 
-
 ------------
 Create Image -> docker build -t <new_image_name>
 Create Image -> docker build -t <new_image_name> -f docker_files/Dockerfile .
