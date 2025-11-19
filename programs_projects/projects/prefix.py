@@ -2,6 +2,8 @@
  
 # array = ['flow', 'flower', 'flown']
 # array = ["flower", "flow", "flight"]
+f_word = ''
+
 array = ["interview", "intermediate", "internal", "internet"]
 
 
