@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Breathing Timer</title>
+
+    <style>
+        :root {
+            --bg: #000;
+            --fg: #fff;
+            --border: #fff;
+            --muted: rgba(255, 255, 255, 0.6);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .app {
+            width: 100%;
+            max-width: 340px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .counter-box {
+            border: 1px solid var(--border);
+            padding: 14px 0;
+            margin-bottom: 16px;
+        }
+
+        #count {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .modes {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .modes label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+
+        input,
+        button {
+            height: 44px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--fg);
+            font-size: 1rem;
+            text-align: center;
+            width: 80px;
+        }
+
+        input[type="radio"] {
+            accent-color: rgb(0, 0, 0);
+            width: 30px;
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+        }
+
+        .phase {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        input:disabled {
+            opacity: 0.4;
+        }
+
+        button {
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button.primary {
+            background: var(--fg);
+            color: var(--bg);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app">
+
+        <div class="counter-box">
+            <div id="count">0</div>
+        </div>
+
+        <div class="modes">
+            <label>
+                <input type="radio" name="mode" value="478" checked>
+                4-7-8
+            </label>
+            <label>
+                <input type="radio" name="mode" value="box">
+                Custom Box
+            </label>
+        </div>
+
+        <div class="phase" id="phase">Ready</div>
+
+        <div class="row">
+            <input type="number" id="inhale" value="4" min="1" placeholder="In">
+            <input type="number" id="hold" value="4" min="0" placeholder="Hold">
+            <input type="number" id="exhale" value="4" min="1" placeholder="Out">
+        </div>
+
+        <!-- 🔹 NEW OPTIONS ROW -->
+        <div class="row">
+            <input type="number" id="cycles" value="0" min="0" placeholder="Cycles">
+            <label style="display:flex;align-items:center;justify-content:center;gap:6px;">
+                <input type="checkbox" id="soundToggle" checked>
+                Sound
+            </label>
+            <div></div>
+        </div>
+
+        <div class="row">
+            <button class="primary" onclick="start()">Start</button>
+            <button onclick="pause()">Pause</button>
+            <button onclick="reset()">Reset</button>
+        </div>
+
+    </div>
+
+    <script>
+        const countEl = document.getElementById("count");
+        const phaseEl = document.getElementById("phase");
+
+        const inhaleInput = document.getElementById("inhale");
+        const holdInput = document.getElementById("hold");
+        const exhaleInput = document.getElementById("exhale");
+
+        const cyclesInput = document.getElementById("cycles");
+        const soundToggle = document.getElementById("soundToggle");
+
+        const modeRadios = document.querySelectorAll('input[name="mode"]');
+
+        let phases = [];
+        let index = 0;
+        let endTime = 0;
+        let running = false;
+        let rafId;
+
+        let maxCycles = 0;
+        let completedCycles = 0;
+        let soundEnabled = true;
+
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function beep() {
+            if (!soundEnabled) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.frequency.value = 650;
+            gain.gain.value = 0.04;
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.12);
+        }
+
+        function getMode() {
+            return [...modeRadios].find(r => r.checked).value;
+        }
+
+        function updateInputs() {
+            reset();
+            const custom = getMode() === "box";
+            inhaleInput.disabled = !custom;
+            holdInput.disabled = !custom;
+            exhaleInput.disabled = !custom;
+        }
+
+        modeRadios.forEach(r => r.addEventListener("change", updateInputs));
+        updateInputs();
+
+        function buildPhases() {
+            if (getMode() === "478") {
+                phases = [
+                    { name: "Inhale", time: 4 },
+                    { name: "Hold", time: 7 },
+                    { name: "Exhale", time: 8 }
+                ];
+            } else {
+                const i = +inhaleInput.value;
+                const h = +holdInput.value;
+                const e = +exhaleInput.value;
+                phases = [
+                    { name: "Inhale", time: i },
+                    { name: "Hold", time: h },
+                    { name: "Exhale", time: e },
+                    { name: "Hold", time: h }
+                ].filter(p => p.time > 0);
+            }
+        }
+
+        function start() {
+            if (running) return;
+            buildPhases();
+            index = 0;
+            completedCycles = 0;
+            maxCycles = +cyclesInput.value || 0;
+            soundEnabled = soundToggle.checked;
+            running = true;
+            setPhase();
+            rafId = requestAnimationFrame(loop);
+        }
+
+        function pause() {
+            running = false;
+            cancelAnimationFrame(rafId);
+        }
+
+        function reset() {
+            pause();
+            index = 0;
+            completedCycles = 0;
+            countEl.textContent = "0";
+            phaseEl.textContent = "Ready";
+        }
+
+        function setPhase() {
+            const p = phases[index];
+            phaseEl.textContent = p.name;
+            beep();
+            endTime = performance.now() + p.time * 1000;
+        }
+
+        function loop(now) {
+            if (!running) return;
+
+            const remaining = Math.max(0, Math.ceil((endTime - now) / 1000));
+            countEl.textContent = remaining;
+
+            if (remaining <= 0) {
+                index++;
+
+                if (index >= phases.length) {
+                    index = 0;
+                    completedCycles++;
+
+                    if (maxCycles > 0 && completedCycles >= maxCycles) {
+                        reset();
+                        return;
+                    }
+                }
+                setPhase();
+            }
+
+            rafId = requestAnimationFrame(loop);
+        }
+    </script>
+
+</body>
+
+</html>
