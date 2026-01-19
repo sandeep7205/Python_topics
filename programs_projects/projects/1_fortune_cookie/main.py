@@ -48,8 +48,10 @@ try:
 
         # ── get category choice ────────────────────────────
         try:
-            prompt = f"\n🎯 Choose a category (1‑{len(categories)}): "
+            prompt = f"\n🎯 Choose a category (1‑{len(categories)} [0 : exit]): "
             choice = int(input(prompt))
+            if choice == 0:
+               raise KeyboardInterrupt
             if not (1 <= choice <= len(categories)):
                 raise ValueError
         except ValueError:
