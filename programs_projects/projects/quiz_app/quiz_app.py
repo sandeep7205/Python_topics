@@ -56,33 +56,33 @@ Fulfill the user stories below and get all the tests to pass to complete the lab
 '''
 import sys
 
+def sys_exit():
+    print("Bye Bye")
+    sys.exit()
+
+
+# def current_qs_options(qs_index, question):
+#     qs_str = f"{qs_index}. {question['question']}\n"
+#     optn_str = ''
+#     option_index_arr = []
+#     for op_index, options in enumerate(question['options'], 1):
+#         op_index = str(op_index)
+#         option_index_arr.append(op_index)
+#         optn_str +=  f"\t{op_index}. {options}\n"
+
+#     question_format = ("\n" + qs_str + optn_str + "\n")
+#     print(question_format)
+
+#     options_str = "/".join(option_index_arr)
+#     qs_answer = user_input(option_index_arr, f"\nWrite your option [{options_str}]: ")
+#     return qs_answer
+
 def user_input(option_index_arr, message):
     options_str = "/".join(option_index_arr)
     qs_answer = input(message)
     if qs_answer not in option_index_arr:
        qs_answer = user_input(option_index_arr, f"\nAnswer should be with in the options \n Write your option [{options_str}]: ")
     return qs_answer
-
-
-def current_qs_options(qs_index, question):
-    qs_str = f"{qs_index}. {question['question']}\n"
-    optn_str = ''
-    option_index_arr = []
-    for op_index, options in enumerate(question['options'], 1):
-        op_index = str(op_index)
-        option_index_arr.append(op_index)
-        optn_str +=  f"\t{op_index}. {options}\n"
-
-    question_format = ("\n" + qs_str + optn_str + "\n")
-    print(question_format)
-
-    options_str = "/".join(option_index_arr)
-    qs_answer = user_input(option_index_arr, f"\nWrite your option [{options_str}]: ")
-    return qs_answer
-
-def sys_exit():
-    print("Bye Bye")
-    sys.exit()
 
 def quiz_app(questions):
     try:
@@ -113,7 +113,21 @@ def quiz_app(questions):
                 print(f"Answer is blank for verification")
                 sys_exit()
 
-            qs_answer = current_qs_options(qs_index, question)
+            # qs_answer = current_qs_options(qs_index, question)
+            qs_str = f"{qs_index}. {question['question']}\n"
+            optn_str = ''
+            option_index_arr = []
+            for op_index, options in enumerate(question['options'], 1):
+                op_index = str(op_index)
+                option_index_arr.append(op_index)
+                optn_str +=  f"\t{op_index}. {options}\n"
+
+            question_format = ("\n" + qs_str + optn_str + "\n")
+            print(question_format)
+
+            options_str = "/".join(option_index_arr)
+            qs_answer = user_input(option_index_arr, f"\nWrite your option [{options_str}]: ")
+            
             print('\n Your Answer - ', qs_answer)
             if (question['options'][(int(qs_answer) - 1)]) == question['answer']:
                 correct_points += 1
@@ -128,59 +142,33 @@ def quiz_app(questions):
 
 questions = [
     {
-        "question": "What is the correct file extension for Python files?",
-        "options": [".py", ".python", ".pt", ".p"],
-        "answer": ".py"
-    },
-    {
-        "question": "Which keyword is used to define a function in Python?",
-        "options": ["func", "define", "def", "function"],
-        "answer": "def"
-    },
-    {
-        "question": "What will print(type(10)) output?",
-        "options": ["<class 'float'>", "<class 'int'>", "<class 'str'>", "<class 'bool'>"],
-        "answer": "<class 'int'>"
-    }
-    ,
-    {
-        "question": "Which data type is used to store multiple values in a single variable?",
-        "options": ["int", "str", "list", "float"],
-        "answer": "list"
-    },
-    {
-        "question": "Which symbol is used for comments in Python?",
-        "options": ["//", "#", "/* */", "--"],
-        "answer": "#"
-    },
-    {
-        "question": "What is the output of: print(2 + 3 * 2)?",
-        "options": ["10", "7", "8", "12"],
+        "question": "What is 5 + 3?",
+        "options": ["7", "8", "9", "10"],
         "answer": "8"
     },
     {
-        "question": "Which function is used to take input from the user?",
-        "options": ["scan()", "read()", "input()", "get()"],
-        "answer": "input()"
+        "question": "Which shape has 3 sides?",
+        "options": ["Square", "Circle", "Triangle", "Rectangle"],
+        "answer": "Triangle"
     },
     {
-        "question": "Which loop is used to iterate over a sequence in Python?",
-        "options": ["while", "for", "do-while", "repeat"],
-        "answer": "for"
+        "question": "What number comes after 11?",
+        "options": ["10", "12", "13", "14"],
+        "answer": "12"
     },
     {
-        "question": "What is the output of: print(len('Python'))?",
-        "options": ["5", "6", "7", "Error"],
-        "answer": "6"
+        "question": "If you have 5 apples and eat 2, how many are left?",
+        "options": ["2", "3", "4", "7"],
+        "answer": "3"
     },
     {
-        "question": "Which keyword is used to check a condition in Python?",
-        "options": ["if", "when", "check", "case"],
-        "answer": "if"
+        "question": "Which number is the biggest?",
+        "options": ["15", "9", "20", "12"],
+        "answer": "20"
     }
 ]
 
 
 quiz_score = quiz_app(questions)
-sys_exit()
 print(quiz_score)
+sys_exit()
