@@ -141,7 +141,8 @@ questions = [
         "question": "What will print(type(10)) output?",
         "options": ["<class 'float'>", "<class 'int'>", "<class 'str'>", "<class 'bool'>"],
         "answer": "<class 'int'>"
-    },
+    }
+    ,
     {
         "question": "Which data type is used to store multiple values in a single variable?",
         "options": ["int", "str", "list", "float"],
