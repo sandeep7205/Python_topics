@@ -256,6 +256,12 @@ questions = [
         "options": {"A", "B", "C", "D"},
         "answer": "A"
     },
+    # options is string
+    {
+        "question": "Pick one",
+        "options": "A",
+        "answer": "A"
+    },
     None,
     "not a dictionary",
     123,
@@ -267,22 +273,43 @@ questions = [
     {"question", "options", "answer"}  # Set literal
 ]
 
-if not isinstance(questions, list):
-    print("Questions are not in list formart")
+if not isinstance(questions, (list, tuple)):
+    print("Invaild format: expeted list or tuple formart")
 
 if len(questions) <= 0:
-    print("Questions are blank")
+    print("expected data in dictinory format inside list or tuple")
 
-new_qs_list = []
+option_keys = set(["question",  "options", "answer"])
+# is_invalid = False
+valid_questions = []
 for index, question in enumerate(questions):
-    print("\n------------------------")
-    print(index, question)
-    if isinstance(question, dict):
-        print(f"Index - {index} question is in Dictinary formart") 
-    else:
-        removed_element = questions.pop(index)
-        print(f"Index - {index} question is not in Dictinary formart") 
-        print(f"Items - {removed_element} removed") 
-    print("\n------------------------")
-# print(questions)
-    
+    # print("\n------------------------")
+    # print(index, question)
+    if not isinstance(question, dict):
+        # print(f'Invalid format: at position {index} - expected a dictionary,"{question}".')
+        # is_invalid = True
+        continue
+    if not set(question.keys()).issuperset(option_keys):
+        # print(f'Invalid format: at position {index} -  missing and/or invalid keys,"{question}".')
+        # is_invalid = True
+        continue
+    valid_questions.append(question)
+
+for valid_index, valid_question in enumerate(valid_questions):
+    print("\n\n", valid_index, ' - ', valid_question)
+
+def if_valid_quizset(index, question, options, answer):
+    print("\n---------------------------------------------")
+    print(index, ' - question - ', question)
+    print(index, ' - options - ', options)
+    print(index, ' - answer - ', answer)
+    print("---------------------------------------------")
+    constrains = {
+        'question': isinstance(question, str) and len(question) > 0,
+        'options': isinstance(options, (list, tuple, set)) and len(question) > 0,
+        'answer': isinstance(answer, str) and len(question) > 0
+    }
+    return constrains
+index_input = 36
+print(if_valid_quizset(index_input, **valid_questions[index_input]))
+print("---------------------------------------------\n\n")
