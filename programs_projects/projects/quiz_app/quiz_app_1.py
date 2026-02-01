@@ -267,5 +267,22 @@ questions = [
     {"question", "options", "answer"}  # Set literal
 ]
 
-for question in questions:
-    print(question)
+if not isinstance(questions, list):
+    print("Questions are not in list formart")
+
+if len(questions) <= 0:
+    print("Questions are blank")
+
+new_qs_list = []
+for index, question in enumerate(questions):
+    print("\n------------------------")
+    print(index, question)
+    if isinstance(question, dict):
+        print(f"Index - {index} question is in Dictinary formart") 
+    else:
+        removed_element = questions.pop(index)
+        print(f"Index - {index} question is not in Dictinary formart") 
+        print(f"Items - {removed_element} removed") 
+    print("\n------------------------")
+# print(questions)
+    
