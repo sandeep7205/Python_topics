@@ -176,14 +176,14 @@ questions = [
     },
     # Extremely long question
     {
-        "question": "A" * 10000,
+        "question": "A" * 100,
         "options": ["Yes", "No"],
         "answer": "Yes"
     },
     # Extremely long option
     {
         "question": "Choose one",
-        "options": ["Short", "B" * 5000, "Normal", "OK"],
+        "options": ["Short", "B" * 50, "Normal", "OK"],
         "answer": "Short"
     },
     # Boolean values instead of strings
@@ -297,19 +297,20 @@ for index, question in enumerate(questions):
 
 for valid_index, valid_question in enumerate(valid_questions):
     print("\n\n", valid_index, ' - ', valid_question)
+    # pass
 
-def if_valid_quizset(index, question, options, answer):
+def if_valid_quizset(index, question, options, answer, **extra_data):
     print("\n---------------------------------------------")
     print(index, ' - question - ', question)
     print(index, ' - options - ', options)
     print(index, ' - answer - ', answer)
     print("---------------------------------------------")
     constrains = {
-        'question': isinstance(question, str) and len(question) > 0,
-        'options': isinstance(options, (list, tuple, set)) and len(question) > 0,
+        'question': isinstance(question, str) and len(question) > 0 and question.isalnum(),
+        'options': isinstance(options, (list, tuple, set)) and len(options) == 4,
         'answer': isinstance(answer, str) and len(question) > 0
     }
     return constrains
-index_input = 36
+index_input = 20
 print(if_valid_quizset(index_input, **valid_questions[index_input]))
 print("---------------------------------------------\n\n")
