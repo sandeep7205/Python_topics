@@ -1,3 +1,15 @@
+# ============================================================
+# File Name: FreeCodeCamp/4_workshop-caesar-cipher.py
+# ============================================================
+#
+# Description:
+# This script implements a Caesar Cipher with support for
+# encryption and decryption. It preserves letter casing and
+# validates the shift value before processing.
+#
+# ============================================================
+
+
 def caesar(text, shift, encrypt=True):
     """
     Perform Caesar cipher encryption or decryption on a given text.
@@ -26,6 +38,7 @@ def caesar(text, shift, encrypt=True):
         alphabet + alphabet.upper(),
         shifted_alphabet + shifted_alphabet.upper()
     )
+
     return text.translate(translation_table)
 
 
@@ -56,6 +69,10 @@ def decrypt(text, shift):
     """
     return caesar(text, shift, encrypt=False)
 
+
+# ------------------------------------------------------------
+# Example Usage
+# ------------------------------------------------------------
 
 encrypted_text = encrypt('freeCodeCamp', 3)
 print(encrypted_text)
