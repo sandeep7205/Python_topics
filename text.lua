@@ -1,4 +1,4 @@
-py Error handiling  (Debugging is an essential skill for any Python developer)
+Error handiling  (Debugging is an essential skill for any Python developer)
 ----
 - Common error messages in python
 -------------------------------------------------
@@ -111,3 +111,183 @@ What Is the Raise Statement and How Does It Work?
 - You can create and raise custom exceptions by defining your own exception classes with custom logic
 - The raise statement can also be used with the `from` keyword to chain exceptions, showing the relationship between different errors
 - You can also raise exceptions conditionally using `assert` statements, which are essentially shorthand for raise with AssertionError
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Class and object
+-----------------------------------------------------------
+How Do Classes Work and How Do They Differ From Objects?
+-----------------------------------------------------------
+- We build a `class` to `define shared behavior`, then create `objects` that `use those behaviors` or a `class` is like a `blueprint or template` you `use` to `create objects` with.
+
+- we use the class keyword followed by the name of the class and a colon. Then within the class, you can add an initializer, along with any attributes and methods. Attributes are like variables within a class, and are used to store data. Methods are functions defined within a class, and are the actions objects created with a class can perform.
+            class ClassName:
+                def __init__(self, name, age):
+                    self.name = name
+                    self.age = age
+
+                def sample_method(self):               
+                    print(self.name.upper())
+    - class ClassName is made up of the class keyword to create a class, followed by the name of the class, here called ClassName. It is common in Python to use the PascalCase convention when naming classes.
+    - def __init__(self, name, age) is the special method automatically called when a new object is created. It initializes the attributes of the objects that will be created with the class.\
+    - In addition to that, the first parameter of __init__ is always a reference to the specific object being created or used. By convention, this parameter is named self, but technically, you can use any name. self lets you access the object's own attributes and methods.
+    - self.name = name and self.age = age are the attributes the objects will have.
+    - def sample_method(self): is the method each object created can call.
+    - print(self.name.upper()) is what the sample_method method will do, in this case, it prints the name in uppercase.
+
+- You can create an object. Here's the basic syntax for creating objects from a class:
+            object_1 = ClassName(attribute_1, attribute_2)
+            object_2 = ClassName(attribute_1, attribute_2)
+
+- You can also call any of the methods defined in the class from each object:
+            object_1.method_name()
+            object_2.method_name()
+
+- Example - A class defines what data and behavior the object should have, and an object holds the actual data and uses that behavior. You write a class once, and you can make many objects from it, each with different data.
+                class Dog:
+                    def __init__(self, name, age):
+                        self.name = name
+                        self.age = age
+
+                    def bark(self):
+                        print(f"{self.name.upper()} says woof woof! I'm {self.age} years old!")
+
+                dog_1 = Dog("Jack", 3)
+                dog_2 = Dog("Thatcher", 5)
+
+                # Call the bark method
+                dog_1.bark()  # JACK says woof woof! I'm 3 years old!
+                dog_2.bark()  # THATCHER says woof woof! I'm 5 years old!
+
+                print(dog_1.name) # Jack
+                print(dog_2.age) # 5
+
+
+
+-----------------------------------------------------------
+What Are Methods and Attributes, and How Do They Work?
+-----------------------------------------------------------
+
+- Attributes are variables that belong to an object, so they hold data. There are two kinds of attributes: 
+    - instance attributes
+        - Instance attributes are unique to each object created from a class, and you usually set them with the __init__ method
+    - class attributes.
+        -  Class attributes, on the other hand, belong to the class itself and are shared by all instances of that class.
+
+- Note:  We can access class attributes directly from the class itself, but you need to create an object and pass it data first before you can access instance attributes.
+
+                class Dog:
+                    # Class attribute (shared by all instances)
+                    species = "canine" 
+
+                    def __init__(self, name, age):
+                        # Instance attributes (unique to each instance)
+                        self.name = name
+                        self.age = age
+                    
+                    def bark(self):
+                        return f"{self.name} says woof woof!"
+
+                # Create instances
+                d = Dog('Fido', 5)
+                e = Dog('Buddy', 3)
+
+                # Access instance attributes (unique to each)
+                print(f"{d.name} is {d.age} years old.") # Output: Fido is 5 years old.
+                print(f"{e.name} is {e.age} years old.") # Output: Buddy is 3 years old.
+
+                print(d.bark()) # Fido says woof woof!
+                print(e.bark()) # Buddy says woof woof!
+
+                # Access class attribute (shared)
+                print(d.species) # Output: canine
+                print(e.species) # Output: canine
+                print(Dog.species) # Output: canine
+
+                # Modify class attribute via the class (affects all)
+                Dog.species = "domestic canine"
+                print(d.species) # Output: domestic canine
+                print(e.species) # Output: domestic canine
+
+
+- Methods are functions defined inside a class. With them, any object defined from a class can perform actions that operate on or modify its own data. You also access a method with dot notation.
+
+
+-----------------------------------------------------------
+What Are Special Methods and What Are They Used For?
+-----------------------------------------------------------
+- Special methods in Python, also known as "magic methods" or "dunder methods", are special Python methods that start and end with double underscores (__). The word "dunder" itself comes from double underscores (d for double, under for underscores).
+        - Example: 
+        - 3 + 4 -> Python quietly runs 3.__add__(4) under the hood.
+        
+- Think of special methods as the directors of the activities between a person programming and the Python language interpreter itself.
+        
+- Python automatically calls them when certain actions happen. These operations include:
+        
+    - Arithmetic operations like addition, subtraction, multiplication, division, and others. In addition, __add__() is called, __sub__() for subtraction, __mul__() for multiplication, and __truediv__() for division.
+        
+    - String operations like concatenation, repetition, formatting, and conversion to text. __add__() is called for concatenation, __mul__() for repetition, __format__() for formatting, __str__() and __repr__() for text conversion, and so on.
+        
+    - Comparison operations like equality, less-than, greater-than, and others. __eq__() is called for equality checks, __lt__() for less-than, __gt__() for greater-than, and so on.
+        
+    - Iteration operations like making an object iterable and advancing through items. __iter__() is called to return an iterator and  __next__() to fetch the next item.
+        
+- When you create your own class, Python won't know how to handle things automatically. This is where special methods come in — they let you customize Python's built-in behavior.
+        - Example: shopping cart where you do the following:
+                - Add items to the cart
+                - Remove items from the cart
+                - Get the number of items in the cart
+                - Check what items are in the cart
+                - Check if a specific item is in the cart
+                - Return or display an item at a specific index in the cart
+
+            class Cart:
+                def __init__(self):
+                    self.items = []
+
+                def add(self, item):
+                    self.items.append(item)
+
+                def remove(self, item):
+                    if item in self.items:
+                        self.items.remove(item)
+                    else:
+                        print(f'{item} is not in cart')
+
+                def list_items(self):
+                    return self.items
+
+                def __len__(self):
+                    return len(self.items)
+
+                def __getitem__(self, index):
+                    return self.items[index]
+
+                def __contains__(self, item):
+                    return item in self.items
+
+                def __iter__(self):
+                    return iter(self.items)
+
+            cart = Cart()
+            cart.add('Laptop')
+            cart.add('Wireless mouse')
+            cart.add('Ergo keyboard')
+            cart.add('Monitor')
+
+            for item in cart:
+            print(item, end=' ') # Laptop Wireless mouse Ergo keyboard Monitor
+
+            print(len(cart)) # 4
+            print(cart[3]) # Monitor
+
+            print('Monitor' in cart) # True
+            print('banana' in cart) # False
+
+            cart.remove('Ergo keyboard')
+
+            print(cart.list_items()) # ['Laptop', 'Wireless mouse', 'Monitor']
+
+            cart.remove('banana') # banana is not in cart
