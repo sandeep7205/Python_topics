@@ -576,3 +576,474 @@ rect.set_width(16)
 print(rect.get_amount_inside(sq))
 
 """
+
+
+
+####################################
+
+
+"""
+
+# ==========================================================
+# RECTANGLE CLASS
+# ==========================================================
+#
+# This class is used to create Rectangle objects.
+#
+# Each rectangle object will have:
+# - width
+# - height
+#
+# We are using:
+# - Getter methods (@property)
+# - Setter methods (@width.setter, @height.setter)
+#
+# These help us control and validate data safely.
+#
+# ==========================================================
+
+class Rectangle:
+
+    # ------------------------------------------------------
+    # Constructor Method
+    # ------------------------------------------------------
+    #
+    # This method runs automatically when object is created.
+    #
+    # Example:
+    # rect = Rectangle(10, 5)
+    #
+    # width = 10
+    # height = 5
+    #
+    # self.width = width
+    # calls the width setter automatically.
+    #
+    # ------------------------------------------------------
+
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    # ======================================================
+    # WIDTH GETTER
+    # ======================================================
+    #
+    # This method runs when we access:
+    #
+    # rect.width
+    #
+    # It returns the internal value _width.
+    #
+    # _width is the actual variable stored in memory.
+    #
+    # ======================================================
+
+    @property
+    def width(self):
+        return self._width
+
+    # ======================================================
+    # WIDTH SETTER
+    # ======================================================
+    #
+    # This method runs automatically when we assign:
+    #
+    # rect.width = 20
+    #
+    # It validates width before storing value.
+    #
+    # ======================================================
+
+    @width.setter
+    def width(self, new_width):
+
+        # Width cannot be negative
+        if new_width < 0:
+            raise ValueError("Width must be positive")
+
+        # Store value internally
+        self._width = new_width
+
+    # ======================================================
+    # HEIGHT GETTER
+    # ======================================================
+
+    @property
+    def height(self):
+        return self._height
+
+    # ======================================================
+    # HEIGHT SETTER
+    # ======================================================
+
+    @height.setter
+    def height(self, new_height):
+
+        # Height cannot be negative
+        if new_height < 0:
+            raise ValueError("Height must be positive")
+
+        # Store value internally
+        self._height = new_height
+
+    # ======================================================
+    # GET AREA
+    # ======================================================
+    #
+    # Formula:
+    #
+    # area = width × height
+    #
+    # Example:
+    #
+    # width = 10
+    # height = 5
+    #
+    # area = 50
+    #
+    # ======================================================
+
+    def get_area(self):
+        return self._width * self._height
+
+    # ======================================================
+    # GET PERIMETER
+    # ======================================================
+    #
+    # Formula:
+    #
+    # perimeter = 2(width + height)
+    #
+    # ======================================================
+
+    def get_perimeter(self):
+        return 2 * (self._width + self._height)
+
+    # ======================================================
+    # GET DIAGONAL
+    # ======================================================
+    #
+    # Formula:
+    #
+    # diagonal = √(width² + height²)
+    #
+    # Example:
+    #
+    # width = 3
+    # height = 4
+    #
+    # diagonal = √(9 + 16)
+    # diagonal = √25
+    # diagonal = 5
+    #
+    # ======================================================
+
+    def get_diagonal(self):
+        return ((self._width) ** 2 + (self._height) ** 2) ** 0.5
+
+    # ======================================================
+    # GET PICTURE
+    # ======================================================
+    #
+    # Draws rectangle using "*" stars.
+    #
+    # Example:
+    #
+    # width = 4
+    # height = 3
+    #
+    # Output:
+    #
+    # ****
+    # ****
+    # ****
+    #
+    # IMPORTANT:
+    #
+    # If width or height is greater than 50,
+    # return:
+    #
+    # "Too big for picture."
+    #
+    # ======================================================
+
+    def get_picture(self):
+
+        # Prevent huge picture output
+        if self._width > 50 or self._height > 50:
+            return "Too big for picture."
+
+        # Empty string to build picture
+        picture = ""
+
+        # Loop through height
+        # Each loop creates one row
+        for w in range(self._height):
+
+            # Add stars and newline
+            picture += "*" * self._width + "\n"
+
+        return picture
+
+    # ======================================================
+    # GET AMOUNT INSIDE
+    # ======================================================
+    #
+    # Calculates how many times another shape
+    # can fit inside current shape.
+    #
+    # NO rotation allowed.
+    #
+    # Example:
+    #
+    # Rectangle(15, 10)
+    # Square(5)
+    #
+    # width fit:
+    # 15 // 5 = 3
+    #
+    # height fit:
+    # 10 // 5 = 2
+    #
+    # total:
+    # 3 × 2 = 6
+    #
+    # // means floor division
+    #
+    # ======================================================
+
+    def get_amount_inside(self, other_shape):
+
+        return (
+            (self._width // other_shape.width)
+            *
+            (self._height // other_shape.height)
+        )
+
+    # ======================================================
+    # STRING REPRESENTATION
+    # ======================================================
+    #
+    # This method controls what prints when object
+    # is printed.
+    #
+    # Example:
+    #
+    # rect = Rectangle(5, 10)
+    # print(rect)
+    #
+    # Output:
+    #
+    # Rectangle(width=5, height=10)
+    #
+    # ======================================================
+
+    def __str__(self):
+        return f"Rectangle(width={self.width}, height={self.height})"
+
+
+# ==========================================================
+# SQUARE CLASS
+# ==========================================================
+#
+# Square class inherits from Rectangle class.
+#
+# Inheritance:
+#
+# Square ---> Rectangle
+#
+# This means Square automatically gets:
+#
+# - get_area()
+# - get_perimeter()
+# - get_diagonal()
+# - get_picture()
+# - get_amount_inside()
+#
+# A square always has:
+#
+# width == height
+#
+# ==========================================================
+
+class Square(Rectangle):
+
+    # ------------------------------------------------------
+    # Constructor
+    # ------------------------------------------------------
+    #
+    # A square only needs ONE side length.
+    #
+    # Example:
+    #
+    # sq = Square(5)
+    #
+    # width = 5
+    # height = 5
+    #
+    # ------------------------------------------------------
+
+    def __init__(self, side_length):
+
+        # width and height are same in square
+        self.width = side_length
+        self.height = side_length
+
+    # ======================================================
+    # WIDTH GETTER
+    # ======================================================
+
+    @property
+    def width(self):
+        return self._width
+
+    # ======================================================
+    # WIDTH SETTER
+    # ======================================================
+    #
+    # When width changes,
+    # height should also change.
+    #
+    # Because:
+    #
+    # width == height in square
+    #
+    # ======================================================
+
+    @width.setter
+    def width(self, new_length):
+
+        if new_length < 0:
+            raise ValueError("Length must be positive")
+
+        # Update both width and height
+        self._width = new_length
+        self._height = new_length
+
+    # ======================================================
+    # HEIGHT GETTER
+    # ======================================================
+
+    @property
+    def height(self):
+        return self._height
+
+    # ======================================================
+    # HEIGHT SETTER
+    # ======================================================
+    #
+    # When height changes,
+    # width should also change.
+    #
+    # ======================================================
+
+    @height.setter
+    def height(self, new_length):
+
+        if new_length < 0:
+            raise ValueError("Length must be positive")
+
+        # Update both height and width
+        self._height = new_length
+        self._width = new_length
+
+    # ======================================================
+    # SIDE LENGTH GETTER
+    # ======================================================
+    #
+    # side_length returns width
+    # because width == height in square.
+    #
+    # ======================================================
+
+    @property
+    def side_length(self):
+        return self._width
+
+    # ======================================================
+    # SIDE LENGTH SETTER
+    # ======================================================
+    #
+    # When side changes,
+    # both width and height must change.
+    #
+    # ======================================================
+
+    @side_length.setter
+    def side_length(self, new_side):
+
+        if new_side < 0:
+            raise ValueError("Side must be positive")
+
+        # Update both dimensions
+        self._height = new_side
+        self._width = new_side
+
+    # ======================================================
+    # STRING REPRESENTATION
+    # ======================================================
+    #
+    # Example:
+    #
+    # sq = Square(4)
+    # print(sq)
+    #
+    # Output:
+    #
+    # Square(side=4)
+    #
+    # ======================================================
+
+    def __str__(self):
+        return f"Square(side={self.width})"
+
+
+# ==========================================================
+# EXAMPLE USAGE
+# ==========================================================
+
+# Create Rectangle object
+rect = Rectangle(10, 5)
+
+# Area = width × height
+print(rect.get_area())
+
+# Change height using setter
+rect.height = 3
+
+# Print perimeter
+print(rect.get_perimeter())
+
+# Print rectangle object
+print(rect)
+
+# Print rectangle shape
+print(rect.get_picture())
+
+# Create Square object
+sq = Square(9)
+
+# Print square area
+print(sq.get_area())
+
+# Change side length
+sq.side_length = 4
+
+# Print diagonal
+print(sq.get_diagonal())
+
+# Print square object
+print(sq)
+
+# Print square shape
+print(sq.get_picture())
+
+# Change rectangle dimensions
+rect.height = 8
+rect.width = 16
+
+# Print how many squares fit inside rectangle
+print(rect.get_amount_inside(sq))
+
+"""
