@@ -1,0 +1,66 @@
+
+
+
+
+Lambda Function
+Definition: A lambda function is a small anonymous function that can take any number of arguments, but can only have one expression.
+Usage: Commonly used where a function is needed temporarily, like in argument lists.
+Syntax: lambda arguments: expression
+Characteristics:
+Quick and disposable.
+Not as powerful as a named function.
+Can be immediately invoked (IIFE - Immediately Invoked Function Expression).
+
+
+Map Function
+Definition: map applies a function to all the items in an input list.
+Usage: Used for transforming a list without using explicit loops.
+Syntax: map(function, iterable, ...)
+Characteristics:
+Returns a map object which is an iterator.
+Can take more than one iterable. The iterables should be of the same length.
+
+
+Zip Function
+Definition: zip aggregates elements from two or more iterables (list, tuple, string etc.).
+Usage: Used to pair items from multiple lists or iterables.
+Syntax: zip(*iterables)
+Characteristics:
+Stops when the shortest input iterable is exhausted.
+Can be used to create dictionaries by zipping two lists.
+
+
+
+Regex (Regular Expressions)
+Definition: A regex is a sequence of characters that forms a search pattern.
+Usage: Used for searching, editing, or manipulating strings.
+Syntax: Various syntaxes depending on the pattern and function used (search, match, findall, sub, etc.).
+Characteristics:
+Powerful and complex, with a steep learning curve.
+Can be used for validation, such as email or phone number formats.
+
+
+Reduce
+Definition: reduce performs a cumulative operation on the items of an iterable.
+Usage: Commonly used for operations that need to carry over a computation (like summing or multiplying all elements).
+Syntax: reduce(function, iterable[, initializer])
+Characteristics:
+Part of functools in Python 3.
+Reduces an iterable to a single value by cumulatively applying a function.
+
+
+Filter
+Definition: filter constructs an iterator from elements of an iterable for which a function returns true.
+Usage: Used to filter collections by a test function.
+Syntax: filter(function, iterable)
+Characteristics:
+The function needs to return True or False.
+Often used with lambda functions.
+
+Evaluate
+Definition: eval parses the expression passed to it and executes Python expression(s).
+Usage: Can dynamically execute Python code. Often used in situations where the code to be executed is not known until runtime.
+Syntax: eval(expression[, globals[, locals]])
+Characteristics:
+Can be dangerous if used with untrusted input.
+Should be avoided or used with great care.
