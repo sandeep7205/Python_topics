@@ -1,0 +1,7 @@
+Python (pandas, NumPy, data structures)
+SQL (joins, window functions, query optimization)
+Data Engineering (pipelines, orchestration with Airflow)
+AWS (S3, EC2, Redshift, Lambda basics)
+ETL processes (extract, transform, load workflows)
+Git & GitHub (version control, collaboration)
+Docker (containers, basic orchestration)
