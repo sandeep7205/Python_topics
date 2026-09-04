@@ -1,0 +1,15 @@
+Date,Category,Amount
+Monday, food ,250
+Tuesday,,300
+Tuesday,FOOD,300
+Wednesday,Food,150
+Tuesday,Food,
+Thursday, travel ,100
+Friday,TRAVEL,450
+Saturday,Shopping, 800
+Sunday, entertainment ,450
+,Food,250
+,Travel,abc
+,Shopping,
+, food ,500
+,,300
