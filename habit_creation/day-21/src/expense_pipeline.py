@@ -1,5 +1,36 @@
 import json
 import csv
+from pathlib import Path
+from dotenv import find_dotenv, dotenv_values
+import sys
+
+def valid_config_files_paths(variable_name_arr, env_path):
+    if env_path == '':
+        discovered_path = find_dotenv()
+        if discovered_path:
+            env_path = Path(discovered_path)
+        else:
+            sys.exit("Dynamic .env file does not exist.")
+
+    if not env_path.is_file():
+        sys.exit(".env file does not exist.")
+    else:
+        config_file_value = dotenv_values(env_path)
+
+        if not variable_name_arr:
+            sys.exit(f"Error: Invalid Variable Name ")
+
+        for variable_name in variable_name_arr:
+            if variable_name not in config_file_value:
+                sys.exit(f"Variable '{variable_name}' is missing from the .env file.")
+            else:
+                if not config_file_value[variable_name]:
+                    sys.exit(f"Error: Config Variable can't be blank.")
+                else:
+                    file_path = Path(config_file_value[variable_name])
+                    if not file_path.exists():
+                        sys.exit(f"file not found: [{config_file_value[variable_name]}]")
+    return True
 
 def read_data(input_csv_file):
     #Open the CSV and get the data.
