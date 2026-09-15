@@ -48,27 +48,52 @@ def clean_data(input_content):
         "invalid_data_cnt": 0
     }
     for input_data in input_content:
+       # handle invalid/missing data
+        if "category" not in input_data:
+            category_validation = False
+        elif input_data['category'] is None:
+            category_validation = False
+        elif not isinstance(input_data['category'], str):
+            category_validation = False
+        else:
+            category = input_data['category'].strip()
+            if not category:
+                category_validation = False
+            elif category.lower() in ['null', 'none', 'nan']:
+                category_validation = False
+            else: 
+                category_validation = True
 
-        category_validation = "category" in input_data and input_data['category'] is not None and input_data['category'].strip() != ''
-        amount_validation = "amount" in input_data and input_data['amount'] is not None
+        if "amount" not in input_data:
+            amount_validation = False
+        elif input_data['amount'] is None:
+            amount_validation = False
+        elif isinstance(input_data['amount'], (bool)):
+            amount_validation = False
+        elif isinstance(input_data['amount'], str):
+            amount = input_data['amount'].strip()
+            if not amount:
+                amount_validation = False
+            elif amount.lower() in ['null', 'none', 'nan', 'infinity', '-infinity']:
+                amount_validation = False
+            else: 
+                amount_validation = True
+        else: 
+            amount_validation = True
 
-        # handle invalid/missing data
+
         try:
             if category_validation and amount_validation:
                 # remove unwanted spaces
                 # normalize category names
-                input_data['category'] = input_data['category'].strip().title()
-                # convert amount from string → integer
-                input_data['amount'] = float(input_data['amount'].strip()) if isinstance(input_data['amount'], str) else input_data['amount'] 
-
+                input_data['category'] = category.title()
+                # convert amount to float
+                input_data['amount'] = float(input_data['amount'])
                 return_dict['clean_data'].append(input_data)
-                
                 return_dict['valid_data_cnt']+= 1
             else:
                 return_dict['invalid_data_cnt']+= 1
         except ValueError:
-            return_dict['invalid_data_cnt']+= 1
-        except AttributeError:
             return_dict['invalid_data_cnt']+= 1
     return return_dict
 

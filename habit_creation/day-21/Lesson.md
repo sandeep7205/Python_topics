@@ -493,3 +493,430 @@ Answer those three first.
 **Then we'll modify `clean_data()` together.**
 
 You're at the good part now—the Python syntax is becoming secondary. We're starting to think about **data contracts**, which is much closer to actual Data Engineering. 🚀
+
+---
+---
+---
+---
+---
+---
+---
+---
+# Final
+---
+
+# 🏆 DAY 21B — COMPLETE
+
+SKM, **your actual output matches the expected result exactly.**
+
+```text
+Total records  = 17
+Valid records  = 9
+Invalid records = 8
+```
+
+And your processing result is correct:
+
+```text
+Travel   → 545.99
+Food     → 590.75
+Shopping → 80.50
+```
+
+Even better, your pipeline correctly handled the tricky cases:
+
+```text
+"None"   → invalid
+None     → invalid
+""       → invalid
+"   "    → invalid
+"abc123" → invalid
+"0"      → valid
+0        → valid
+"120.50" → valid
+```
+
+That's the actual purpose of today's exercise.
+
+---
+
+# 🧑‍🏫 Day 21 Mentor Lesson — Part A + Part B
+
+You asked me to give you the **proper mentor lesson after completing both parts**, so here it is.
+
+## Part A — Configuration Portability
+
+The problem started with something very simple:
+
+> You moved to another laptop and `.env` wasn't there.
+
+That's not a Python problem.
+
+That's an **environment/configuration problem**.
+
+Your application depends on things like:
+
+```text
+EXPENSE_JSON_FILE
+EXPENSE_OUTPUT_JSON_FILE
+EXPENSE_CSV_FILE
+```
+
+Those values can differ between machines.
+
+So we separated:
+
+```text
+APPLICATION CODE
+       ↓
+      LOGIC
+
+CONFIGURATION
+       ↓
+     .env
+```
+
+### `.env`
+
+Contains the actual local configuration.
+
+### `.env.example`
+
+Contains the **template** for another developer.
+
+```text
+APP_NAME=
+EXPENSE_JSON_FILE=
+EXPENSE_OUTPUT_JSON_FILE=
+EXPENSE_CSV_FILE=
+```
+
+So when you clone the project onto another laptop:
+
+```text
+GitHub
+  ↓
+clone repository
+  ↓
+.env doesn't exist
+  ↓
+copy/use .env.example
+  ↓
+create local .env
+  ↓
+fill machine-specific values
+  ↓
+application runs
+```
+
+That's a very normal development workflow.
+
+---
+
+## `load_dotenv()`
+
+You learned that:
+
+```python
+load_dotenv()
+```
+
+loads values from `.env` into the environment.
+
+Then:
+
+```python
+os.getenv("EXPENSE_JSON_FILE")
+```
+
+retrieves them.
+
+Important distinction:
+
+```text
+.env
+ ↓
+load_dotenv()
+ ↓
+environment
+ ↓
+os.getenv()
+```
+
+---
+
+## `find_dotenv()`
+
+You also discovered:
+
+```python
+find_dotenv()
+```
+
+instead of hardcoding:
+
+```text
+habit_creation/day-21/.env
+```
+
+That's important because your project might live somewhere completely different on another machine.
+
+You essentially moved from:
+
+> "I know exactly where my `.env` is."
+
+to:
+
+> **"Find the configuration wherever the project environment provides it."**
+
+That's a better engineering mindset.
+
+---
+
+# Part B — Make Your Pipeline Tell the Truth
+
+This was the more important lesson.
+
+Previously, your pipeline basically asked:
+
+```text
+Does category have something?
+```
+
+That isn't enough.
+
+Real-world data can contain:
+
+```text
+None
+""
+"   "
+"None"
+"null"
+"abc"
+"0"
+0
+"120.50"
+```
+
+They don't all mean the same thing.
+
+You learned to distinguish:
+
+### Missing
+
+```python
+None
+```
+
+### Empty
+
+```python
+""
+```
+
+### Whitespace
+
+```python
+"   "
+```
+
+### Fake missing value
+
+```python
+"None"
+"null"
+```
+
+### Valid zero
+
+```python
+0
+"0"
+```
+
+### Valid decimal
+
+```python
+"120.50"
+```
+
+### Invalid numeric value
+
+```python
+"abc123"
+```
+
+That's **data quality thinking**.
+
+---
+
+# 🔥 The biggest lesson from Day 21
+
+Your pipeline now has a much clearer structure:
+
+```text
+               INPUT
+                 ↓
+          Configuration
+             validation
+                 ↓
+          Read the data
+                 ↓
+        ┌─────────────────┐
+        │   VALIDATION    │
+        └─────────────────┘
+                 ↓
+          Is record valid?
+           ↙           ↘
+        INVALID        VALID
+           ↓             ↓
+       discard         CLEAN
+                         ↓
+                      CONVERT
+                         ↓
+                     PROCESS
+                         ↓
+                      OUTPUT
+```
+
+That's beginning to look like a real **ETL pipeline**.
+
+---
+
+# One subtle thing I want you to remember
+
+You initially tried:
+
+```python
+.isnumeric()
+```
+
+It felt logical.
+
+But we discovered:
+
+```python
+"120.50".isnumeric()
+```
+
+is `False`.
+
+So you learned something bigger than that particular method:
+
+> **Don't validate data based on how it looks. Validate it based on the actual requirement.**
+
+For an expense amount, the requirement is:
+
+> "Can this value represent a valid numeric amount?"
+
+That's why:
+
+```python
+float("120.50")
+```
+
+is much more meaningful than:
+
+```python
+"120.50".isnumeric()
+```
+
+---
+
+# 🧠 Your Day 1 → Day 21 progression
+
+Look at what you've built.
+
+You started with:
+
+```text
+variables
+```
+
+Then:
+
+```text
+conditions
+↓
+loops
+↓
+lists
+↓
+dictionaries
+↓
+functions
+↓
+files
+↓
+CSV
+↓
+cleaning
+↓
+processing
+↓
+exceptions
+↓
+modules
+↓
+environment configuration
+↓
+JSON
+↓
+nested JSON
+↓
+configuration validation
+↓
+data validation
+```
+
+And now you're not just writing isolated Python programs.
+
+You're thinking in terms of:
+
+```text
+INPUT → VALIDATE → CLEAN → PROCESS → OUTPUT
+```
+
+**That's the transition I wanted you to reach.**
+
+---
+
+# 🏁 Day 21 is officially closed
+
+Don't add another feature tonight.
+
+Don't refactor `clean_data()`.
+
+Don't introduce pandas.
+
+Don't start classes.
+
+Don't optimize.
+
+**You won.**
+
+Your pipeline told the truth:
+
+```text
+17 records received
+9 valid
+8 invalid
+3 categories processed
+```
+
+Tomorrow we move to:
+
+# 🚀 DAY 22 — WIN THE DAY
+
+And we'll keep the same rule:
+
+**15 minutes minimum.**
+
+Not "I have to become a Data Engineer today."
+
+Just:
+
+> **Show up. Learn one thing. Build one thing. Leave.**
+
+That's how we're going to get you there. 💪

@@ -22,6 +22,8 @@ if pe.valid_config_files_paths(env_variavbles_arr, ''):
 
     get_clean_data = pe.clean_data(get_json_data['expenses'])
 
+    print(get_clean_data)
+
     get_process_data = pe.process_data(get_clean_data['clean_data'])
     clean_json_data['expenses'] = get_process_data
 
