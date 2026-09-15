@@ -6,7 +6,8 @@
     },
     "expenses": {
         "Travel": 545.99,
-        "Food": 370.0,
+        "Food": 590.75,
+        "None": 50.0,
         "Shopping": 80.5
     }
 }

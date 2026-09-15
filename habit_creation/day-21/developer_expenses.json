@@ -5,25 +5,19 @@
         "experience": "4.5 years"
     },
     "expenses": [
-        {
-            "category": "Travel",
-            "amount": 45.99
-        },
-        {
-            "category": "Food",
-            "amount": "120.00"
-        },
-        {
-            "category": "Food",
-            "amount": 250
-        },
-        {
-            "category": "Travel",
-            "amount": "500"
-        },
-        {
-            "category": "shopping",
-            "amount": "80.50"
-        }
+        {"category": "Travel", "amount": 45.99},
+        {"category": "Food", "amount": "120.00"},
+        {"category": "Food", "amount": 250},
+        {"category": "Travel", "amount": "500"},
+        {"category": "Food", "amount": "120.50"},
+        {"category": "None", "amount": "50"},
+        {"category": "", "amount": "50"},
+        {"category": "   ", "amount": "50"},
+        {"category": "Travel", "amount": "None"},
+        {"category": "Food", "amount": ""},
+        {"category": "Shopping", "amount": "abc"},
+        {"category": "Food", "amount": "100.25"},
+        {"category": "Food", "amount": 0},
+        {"category": "shopping", "amount": "80.50"}
     ]
 }

@@ -48,14 +48,18 @@ def clean_data(input_content):
         "invalid_data_cnt": 0
     }
     for input_data in input_content:
+
+        category_validation = "category" in input_data and input_data['category'] is not None and input_data['category'].strip() != ''
+        amount_validation = "amount" in input_data and input_data['amount'] is not None
+
         # handle invalid/missing data
         try:
-            if input_data['Category'.lower()]:
+            if category_validation and amount_validation:
                 # remove unwanted spaces
                 # normalize category names
-                input_data['Category'.lower()] = input_data['Category'.lower()].strip().title()
+                input_data['category'] = input_data['category'].strip().title()
                 # convert amount from string → integer
-                input_data['Amount'.lower()] = float(input_data['Amount'.lower()].strip()) if isinstance(input_data['Amount'.lower()], str) else input_data['Amount'.lower()] 
+                input_data['amount'] = float(input_data['amount'].strip()) if isinstance(input_data['amount'], str) else input_data['amount'] 
 
                 return_dict['clean_data'].append(input_data)
                 
@@ -64,14 +68,16 @@ def clean_data(input_content):
                 return_dict['invalid_data_cnt']+= 1
         except ValueError:
             return_dict['invalid_data_cnt']+= 1
+        except AttributeError:
+            return_dict['invalid_data_cnt']+= 1
     return return_dict
 
 def process_data(clean_content):
     #Calculate category totals.
     category_dict_amount = {}
     for clean_data in clean_content:
-        category = clean_data['Category'.lower()]
-        amount = clean_data['Amount'.lower()]
+        category = clean_data['category']
+        amount = clean_data['amount']
         if category not in category_dict_amount:
             category_dict_amount.update({category:amount})
         else:

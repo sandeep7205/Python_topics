@@ -1,4 +1,354 @@
-# 🚀 Day 21 — Let's Make Your Pipeline Tell the Truth
+# Day-21A
+Absolutely, SKM. **This is actually a very good real-world problem to discover on Day 21.**
+
+You have:
+
+```text
+Laptop A
+   ↓
+.env exists locally
+   ↓
+GitHub
+   ↓
+Laptop B
+   ↓
+clone/pull project
+   ↓
+.env missing ❌
+```
+
+And that's expected if `.env` is in `.gitignore`.
+
+The mistake would be to put the real `.env` into Git just to make the project work everywhere.
+
+Instead, let's improve the project.
+
+# 🚀 Day 21 — Configuration That Survives Different Machines
+
+Today's original validation task is **postponed**.
+
+We're going to solve this first because it's a real problem you're facing **right now**.
+
+## 🎯 The goal
+
+Your project should work on a new laptop with a simple setup process:
+
+```text
+GitHub
+  ↓
+clone project
+  ↓
+.env.example
+  ↓
+create your own .env
+  ↓
+run project
+```
+
+This is a standard development pattern.
+
+---
+
+# 🧠 First: understand the difference
+
+### `.env`
+
+Contains your **actual local values**:
+
+```text
+EXPENSE_CSV_FILE=...
+EXPENSE_JSON_FILE=...
+APP_NAME=Expense Tracker
+```
+
+This should generally stay out of Git if it contains secrets or machine-specific configuration.
+
+### `.env.example`
+
+Contains the **template**:
+
+```text
+EXPENSE_CSV_FILE=
+EXPENSE_JSON_FILE=
+APP_NAME=
+```
+
+This **can be committed to GitHub**.
+
+So your repository tells another developer:
+
+> "These are the configuration values you need."
+
+But it doesn't expose your actual secrets.
+
+---
+
+# 🏗️ Your Day 21 project structure
+
+I'd like you to move toward:
+
+```text
+day-21/
+│
+├── main.py
+├── .env
+├── .env.example
+├── .gitignore
+│
+├── expenses.csv
+│
+└── src/
+    └── expense_pipeline.py
+```
+
+Think:
+
+```text
+.env
+   ↓
+REAL LOCAL CONFIG
+   ↓
+NOT COMMITTED
+
+.env.example
+   ↓
+CONFIG TEMPLATE
+   ↓
+COMMITTED TO GITHUB
+```
+
+---
+
+# 🛠️ Your task
+
+## Step 1 — Create `.env.example`
+
+Take the variables you're currently using:
+
+```text
+APP_NAME
+EXPENSE_CSV_FILE
+EXPENSE_JSON_FILE
+```
+
+Put their **names** into `.env.example`.
+
+Don't put your real secrets there.
+
+---
+
+## Step 2 — Make `.env` local
+
+Your `.env` contains your actual values.
+
+For example:
+
+```text
+APP_NAME=Expense Tracker
+EXPENSE_CSV_FILE=...
+EXPENSE_JSON_FILE=...
+```
+
+But `.env` should stay ignored by Git.
+
+---
+
+# 🧩 Step 3 — Think about the missing `.env`
+
+Here's the next question:
+
+What happens if someone clones your project and does:
+
+```python
+input_file = os.getenv("EXPENSE_CSV_FILE")
+```
+
+but the environment variable doesn't exist?
+
+What will:
+
+```python
+os.getenv("EXPENSE_CSV_FILE")
+```
+
+return?
+
+**Think before searching.**
+
+That's today's little puzzle.
+
+---
+
+# 🔥 Step 4 — Handle missing configuration
+
+Your program shouldn't fail later with something confusing like:
+
+```text
+TypeError
+```
+
+or:
+
+```text
+FileNotFoundError
+```
+
+Instead, you want your application to say something meaningful:
+
+```text
+Missing configuration: EXPENSE_CSV_FILE
+Please create a .env file using .env.example
+```
+
+That's much better.
+
+This is the exact kind of robustness I want you to start building.
+
+---
+
+# ⭐ Bonus — Configuration validation
+
+You have three configuration values:
+
+```text
+APP_NAME
+EXPENSE_CSV_FILE
+EXPENSE_JSON_FILE
+```
+
+Think about creating something like:
+
+```text
+validate_config()
+```
+
+Its responsibility:
+
+> Check that required configuration exists before the pipeline starts.
+
+Then your program becomes:
+
+```text
+load configuration
+       ↓
+validate configuration
+       ↓
+     valid?
+      /   \
+    YES    NO
+     ↓      ↓
+ pipeline   clear error
+```
+
+That's a much better application flow.
+
+---
+
+# 🚨 Important: don't solve this by doing this
+
+Don't put:
+
+```text
+password
+API_KEY
+database credentials
+```
+
+directly into GitHub just because another laptop needs them.
+
+And don't blindly do:
+
+```python
+os.getenv("EXPENSE_CSV_FILE", "some-hardcoded-path")
+```
+
+for every configuration value.
+
+Sometimes defaults are useful.
+
+But for **required configuration**, it's often better to fail clearly.
+
+---
+
+# 🧠 Why I'm changing Day 21
+
+You said:
+
+> "we also need a way to handle these kind situation"
+
+**Yes. Absolutely.**
+
+This is actually better than blindly following the original exercise.
+
+You're encountering the exact kind of problem that happens when software moves between:
+
+```text
+my laptop
+   ↓
+your laptop
+   ↓
+CI/CD
+   ↓
+server
+   ↓
+Docker
+```
+
+Configuration management becomes important very quickly.
+
+So today we're turning that real problem into the lesson.
+
+---
+
+## 🎯 Minimum Day 21
+
+You only need to accomplish:
+
+```text
+.env.example
+       +
+missing-config detection
+       +
+project still works with your local .env
+```
+
+**15 minutes is enough.**
+
+Don't worry about secrets managers or Docker yet.
+
+We'll get there later.
+
+### Today's principle:
+
+> **Your code should be portable; machine-specific configuration should not be hardcoded into it.**
+
+And honestly, SKM — **this is exactly the kind of question I want you asking as you move toward Data Engineering.**
+
+You didn't just ask *"why is my `.env` missing?"*
+
+You asked:
+
+> **"How should the system handle this situation?"**
+
+That's the right question. 🔥
+
+
+
+
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+---
+
+
+# 🚀 Day 21B (Part-1) — Let's Make Your Pipeline Tell the Truth
 
 SKM, **Day 21.** 🐍🔥
 
@@ -408,350 +758,261 @@ I'll review **the validation logic**, not just whether the program runs.
 Let's cover Day 21. 🔥
 
 
-
-
-
----
----
----
----
----
----
----
----
----
----
 ---
 
-Absolutely, SKM. **This is actually a very good real-world problem to discover on Day 21.**
+# 🚀 Day 21B (part-2)— Let's Make Your Pipeline Tell the Truth
 
-You have:
+Today we're going to improve something you've already built:
 
 ```text
-Laptop A
-   ↓
-.env exists locally
-   ↓
-GitHub
-   ↓
-Laptop B
-   ↓
-clone/pull project
-   ↓
-.env missing ❌
+CSV / JSON
+    ↓
+clean_data()
+    ↓
+valid / invalid
 ```
 
-And that's expected if `.env` is in `.gitignore`.
+The problem is: **right now your pipeline doesn't fully know why data is invalid.**
 
-The mistake would be to put the real `.env` into Git just to make the project work everywhere.
-
-Instead, let's improve the project.
-
-# 🚀 Day 21 — Configuration That Survives Different Machines
-
-Today's original validation task is **postponed**.
-
-We're going to solve this first because it's a real problem you're facing **right now**.
-
-## 🎯 The goal
-
-Your project should work on a new laptop with a simple setup process:
-
-```text
-GitHub
-  ↓
-clone project
-  ↓
-.env.example
-  ↓
-create your own .env
-  ↓
-run project
-```
-
-This is a standard development pattern.
+Today we fix that.
 
 ---
 
-# 🧠 First: understand the difference
+## 🎯 Today's goal
 
-### `.env`
+By the end of this session, your pipeline should be able to distinguish between:
 
-Contains your **actual local values**:
+| Situation        | Example            | Classification |
+| ---------------- | ------------------ | -------------- |
+| Valid            | `Food`, `120.50`   | ✅ Valid        |
+| Missing category | `None`, `120`      | ❌ Missing      |
+| Empty category   | `""`, `120`        | ❌ Empty        |
+| Spaces only      | `"   "`, `120`     | ❌ Empty        |
+| Missing amount   | `Food`, `None`     | ❌ Missing      |
+| Empty amount     | `Food`, `""`       | ❌ Empty        |
+| Invalid amount   | `Food`, `"abc"`    | ❌ Invalid      |
+| Decimal          | `Food`, `"100.50"` | ✅ Valid        |
+| Zero             | `Food`, `0`        | 🤔 You decide  |
 
-```text
-EXPENSE_CSV_FILE=...
-EXPENSE_JSON_FILE=...
-APP_NAME=Expense Tracker
-```
+That last one is important.
 
-This should generally stay out of Git if it contains secrets or machine-specific configuration.
+**Don't assume zero is invalid.**
 
-### `.env.example`
+A transaction with `0` could be perfectly legitimate depending on the business rules.
 
-Contains the **template**:
-
-```text
-EXPENSE_CSV_FILE=
-EXPENSE_JSON_FILE=
-APP_NAME=
-```
-
-This **can be committed to GitHub**.
-
-So your repository tells another developer:
-
-> "These are the configuration values you need."
-
-But it doesn't expose your actual secrets.
+That's what real data engineering involves: **defining what "valid" actually means.**
 
 ---
 
-# 🏗️ Your Day 21 project structure
+# 🧠 Step 1 — Forget the code for a moment
 
-I'd like you to move toward:
-
-```text
-day-21/
-│
-├── main.py
-├── .env
-├── .env.example
-├── .gitignore
-│
-├── expenses.csv
-│
-└── src/
-    └── expense_pipeline.py
-```
-
-Think:
-
-```text
-.env
-   ↓
-REAL LOCAL CONFIG
-   ↓
-NOT COMMITTED
-
-.env.example
-   ↓
-CONFIG TEMPLATE
-   ↓
-COMMITTED TO GITHUB
-```
-
----
-
-# 🛠️ Your task
-
-## Step 1 — Create `.env.example`
-
-Take the variables you're currently using:
-
-```text
-APP_NAME
-EXPENSE_CSV_FILE
-EXPENSE_JSON_FILE
-```
-
-Put their **names** into `.env.example`.
-
-Don't put your real secrets there.
-
----
-
-## Step 2 — Make `.env` local
-
-Your `.env` contains your actual values.
-
-For example:
-
-```text
-APP_NAME=Expense Tracker
-EXPENSE_CSV_FILE=...
-EXPENSE_JSON_FILE=...
-```
-
-But `.env` should stay ignored by Git.
-
----
-
-# 🧩 Step 3 — Think about the missing `.env`
-
-Here's the next question:
-
-What happens if someone clones your project and does:
+Here's your test data:
 
 ```python
-input_file = os.getenv("EXPENSE_CSV_FILE")
+test_data = [
+    {"category": "Food", "amount": "120.50"},
+    {"category": None, "amount": "50"},
+    {"category": "", "amount": "50"},
+    {"category": "   ", "amount": "50"},
+    {"category": "Travel", "amount": None},
+    {"category": "Food", "amount": ""},
+    {"category": "Shopping", "amount": "abc"},
+    {"category": "Food", "amount": "100.25"},
+    {"category": "Food", "amount": 0},
+]
 ```
 
-but the environment variable doesn't exist?
+### Your first challenge
 
-What will:
+Before writing any code, tell me how **you** would classify all 9 records.
+
+Use this format:
+
+```text
+1 → Valid
+2 → Missing category
+3 → ...
+```
+
+And especially tell me:
+
+> **Should record #9 (`amount = 0`) be valid or invalid? Why?**
+
+Don't code yet.
+
+This is the first lesson of today's session:
+
+> **A data pipeline cannot validate data until you define what valid data means.**
+
+```json
+{"category": "Food", "amount": "120.50"} -> Valid
+{"category": None, "amount": "50"} -> InValid
+{"category": "", "amount": "50"} -> InValid
+{"category": "   ", "amount": "50"} -> InValid
+{"category": "Travel", "amount": None} -> InValid
+{"category": "Food", "amount": ""} -> InValid
+{"category": "Shopping", "amount": "abc"} -> InValid
+{"category": "Food", "amount": "100.25"} -> Valid
+{"category": "Food", "amount": 0} -> Valid"}
+```
+
+---
+Exactly, SKM. ✅ Your classification is correct, including **`amount = 0` → Valid**.
+
+That's a good engineering decision because **zero is a value, not missing data**.
+
+### Your rules for Day 21B
+
+Let's make them explicit:
+
+```text id="j6m1bg"
+CATEGORY
+────────
+None       → Invalid
+""         → Invalid
+"   "      → Invalid
+"Food"     → Valid
+
+
+AMOUNT
+──────
+None       → Invalid
+""         → Invalid
+"abc"      → Invalid
+"100.25"   → Valid
+100.25     → Valid
+0          → Valid
+```
+
+One subtle point: `"   "` isn't technically the same thing as `""`, but after cleaning with `.strip()`, it becomes `""`. That's why we can classify it as empty.
+
+---
+
+# 🧠 Step 2 — Think like a Data Engineer
+
+Your current validation is roughly:
 
 ```python
-os.getenv("EXPENSE_CSV_FILE")
+if input_data['category']:
+    ...
 ```
 
-return?
+What's wrong with that?
 
-**Think before searching.**
+It only checks **one field** and then immediately starts cleaning/converting.
 
-That's today's little puzzle.
+We want something more deliberate:
+
+```text
+             Record
+                ↓
+       Is category present?
+          ↙          ↘
+        NO            YES
+        ↓              ↓
+     Invalid      Clean category
+                       ↓
+                Is amount present?
+                  ↙          ↘
+                NO            YES
+                ↓              ↓
+             Invalid      Convert amount
+                              ↓
+                       Conversion works?
+                         ↙       ↘
+                       NO         YES
+                       ↓           ↓
+                    Invalid      Valid
+```
+
+This is a **validation pipeline**.
 
 ---
 
-# 🔥 Step 4 — Handle missing configuration
+# 🎯 Step 2 Challenge — Your turn
 
-Your program shouldn't fail later with something confusing like:
+Modify your `clean_data()` function.
 
-```text
-TypeError
-```
+### Rules
 
-or:
+For each record:
 
-```text
-FileNotFoundError
-```
+**1. Category**
 
-Instead, you want your application to say something meaningful:
+* Must exist
+* Must not be `None`
+* Must not be empty after `.strip()`
 
-```text
-Missing configuration: EXPENSE_CSV_FILE
-Please create a .env file using .env.example
-```
+**2. Amount**
 
-That's much better.
+* Must exist
+* Must not be `None`
+* Must not be empty after `.strip()`
+* Must be convertible to `float`
+* `0` is valid
 
-This is the exact kind of robustness I want you to start building.
+**3. If everything passes**
 
----
+* Clean the category
+* Convert amount to `float`
+* Add to `clean_data`
+* Increment `valid_data_cnt`
 
-# ⭐ Bonus — Configuration validation
+**4. If something fails**
 
-You have three configuration values:
-
-```text
-APP_NAME
-EXPENSE_CSV_FILE
-EXPENSE_JSON_FILE
-```
-
-Think about creating something like:
-
-```text
-validate_config()
-```
-
-Its responsibility:
-
-> Check that required configuration exists before the pipeline starts.
-
-Then your program becomes:
-
-```text
-load configuration
-       ↓
-validate configuration
-       ↓
-     valid?
-      /   \
-    YES    NO
-     ↓      ↓
- pipeline   clear error
-```
-
-That's a much better application flow.
+* Don't add the record
+* Increment `invalid_data_cnt`
 
 ---
 
-# 🚨 Important: don't solve this by doing this
+### 🚫 Don't add error categories yet
 
-Don't put:
+For now, keep your existing structure:
 
-```text
-password
-API_KEY
-database credentials
+```text id="m4y9kq"
+{
+    "clean_data": [],
+    "valid_data_cnt": 0,
+    "invalid_data_cnt": 0
+}
 ```
 
-directly into GitHub just because another laptop needs them.
+We're deliberately doing this in stages.
 
-And don't blindly do:
+First make the pipeline correctly answer:
+
+> **"Is this record valid or invalid?"**
+
+Later we'll make it answer:
+
+> **"WHY is this record invalid?"**
+
+That's the next level.
+
+---
+
+### 💡 One important Python trap
+
+Be careful with this:
 
 ```python
-os.getenv("EXPENSE_CSV_FILE", "some-hardcoded-path")
+if amount:
 ```
 
-for every configuration value.
+Because:
 
-Sometimes defaults are useful.
-
-But for **required configuration**, it's often better to fail clearly.
-
----
-
-# 🧠 Why I'm changing Day 21
-
-You said:
-
-> "we also need a way to handle these kind situation"
-
-**Yes. Absolutely.**
-
-This is actually better than blindly following the original exercise.
-
-You're encountering the exact kind of problem that happens when software moves between:
-
-```text
-my laptop
-   ↓
-your laptop
-   ↓
-CI/CD
-   ↓
-server
-   ↓
-Docker
+```text id="5gpp7s"
+None  → False
+""    → False
+0     → False   ← problem!
 ```
 
-Configuration management becomes important very quickly.
+We already decided:
 
-So today we're turning that real problem into the lesson.
+**`0` is valid.**
 
----
+So your validation logic needs to distinguish **missing/empty** from a legitimate numeric zero.
 
-## 🎯 Minimum Day 21
+That's your challenge.
 
-You only need to accomplish:
-
-```text
-.env.example
-       +
-missing-config detection
-       +
-project still works with your local .env
-```
-
-**15 minutes is enough.**
-
-Don't worry about secrets managers or Docker yet.
-
-We'll get there later.
-
-### Today's principle:
-
-> **Your code should be portable; machine-specific configuration should not be hardcoded into it.**
-
-And honestly, SKM — **this is exactly the kind of question I want you asking as you move toward Data Engineering.**
-
-You didn't just ask *"why is my `.env` missing?"*
-
-You asked:
-
-> **"How should the system handle this situation?"**
-
-That's the right question. 🔥
+**Write your new `clean_data()` yourself and send it to me.** I'll review it line-by-line with you. 💪
