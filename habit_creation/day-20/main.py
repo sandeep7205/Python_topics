@@ -13,7 +13,6 @@ load_dotenv()
 
 json_file_path = os.getenv("EXPENSE_JSON_FILE")
 json_output_file_path = os.getenv("EXPENSE_output_JSON_FILE")
-csv_file_path = os.getenv("EXPENSE_CSV_FILE")
 app_name = os.getenv("APP_NAME")
 
 

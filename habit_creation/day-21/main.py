@@ -6,7 +6,6 @@ env_variavbles_arr = ["EXPENSE_JSON_FILE", "EXPENSE_OUTPUT_JSON_FILE", "EXPENSE_
 if pe.valid_config_files_paths(env_variavbles_arr, ''):
     json_file_path = os.getenv("EXPENSE_JSON_FILE")
     json_output_file_path = os.getenv("EXPENSE_OUTPUT_JSON_FILE")
-    csv_file_path = os.getenv("EXPENSE_CSV_FILE")
 
     clean_json_data = {
         'developer': {},

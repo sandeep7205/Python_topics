@@ -1,15 +1,15 @@
-Date,Category,Amount
-Monday, food ,250
+date,category,amount
+Monday, Utilities ,250
 Tuesday,,300
-Tuesday,FOOD,300
-Wednesday,Food,150
+Tuesday,Mobile,300
+Wednesday,Utilities,150
 Tuesday,Food,
 Thursday, travel ,100
 Friday,TRAVEL,450
 Saturday,Shopping, 800
 Sunday, entertainment ,450
-,Food,250
+,Mobile,250
 ,Travel,abc
 ,Shopping,
-, food ,500
+, Entertainment ,500
 ,,300
