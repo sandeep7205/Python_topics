@@ -47,7 +47,6 @@ def read_data(input_csv_file):
     return get_content
 
 def clean_data(input_content):
-
     return_dict = {
         "clean_data": [],
         "valid_data_cnt": 0,
@@ -107,7 +106,6 @@ def clean_data(input_content):
                 return_dict['clean_data'].append(input_data)
                 return_dict['valid_data_cnt']+= 1
             else:
-                # traceback.print_exc()
                 return_dict['invalid_data_cnt']+= 1
         except ValueError:
             # traceback.print_exc()

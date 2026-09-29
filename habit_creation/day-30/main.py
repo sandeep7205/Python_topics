@@ -27,9 +27,7 @@ if pe.valid_config_files_paths(env_variavbles_arr, ''):
         merge_csv_json_data = get_json_data['expenses'] + get_csv_data
 
         get_clean_data = pe.clean_data(merge_csv_json_data)
-        if "clean_data" in get_clean_data:
-            del get_clean_data["clean_data"] # delete from the local variable & the original data got unchanged
-        print(get_clean_data)
+
         get_process_category_data = pe.process_data(get_clean_data['clean_data'])
         clean_json_data['category_expenses'] = get_process_category_data
 
