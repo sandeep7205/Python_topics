@@ -168,3 +168,38 @@ In the future, it can also include:
 * Settings for choosing a local or cloud LLM
 
 For the first version, Streamlit keeps the UI simple so that the main focus can remain on the **Data Engineering pipeline and backend architecture**.
+
+---
+
+## Future Improvements
+
+### PDF Extraction Upgrade Path
+
+Current Sprint 2 uses **PyMuPDF** for simple page-level text extraction from text-based PDFs.
+
+When requirements grow, consider replacing or supplementing with **Docling**:
+
+```
+PyMuPDF   → simple text extraction, fast, lightweight
+Docling   → multi-format support, tables, images, OCR, RAG-ready output
+```
+
+Advanced extraction targets for later sprints:
+
+```
+Tables        → structured data within PDFs
+Images        → figures, charts, diagrams
+Links         → internal and external references
+Bookmarks     → document structure / navigation
+OCR           → scanned / image-based PDFs (e.g. Tesseract, Amazon Textract)
+Font encoding → handle ligature and encoding failures
+```
+
+### Other future ideas
+
+* User authentication and user management
+* Chat history and document history
+* Multiple document conversations
+* Support for local and cloud LLM selection
+* Support for other document types (Word, CSV, Markdown, HTML)
+* Deployment for other users
