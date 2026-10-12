@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data - don't commit large PDFs or processed data
+data/raw/*.pdf
+data/processed/
+
+# Database
+*.db
+*.sqlite3
+
+# Vector store
+*.faiss
+*.index
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/

@@ -1,0 +1,23 @@
+# PDF Q&A System - Dependencies
+# Install: pip install -r requirements.txt
+
+# PDF extraction
+pymupdf==1.25.3
+
+# Database
+# SQLite is built into Python - no extra dependency needed
+
+# Embeddings
+sentence-transformers==4.1.0
+
+# Vector store
+faiss-cpu==1.11.0
+
+# LLM
+ollama==0.5.1
+
+# UI
+streamlit==1.45.1
+
+# Environment variables
+python-dotenv==1.1.0
