@@ -1,4 +1,4 @@
-# Python-Notes
+# Notes
 <!-- 
 ------------
 Create Image -> docker build -t <new_image_name>
